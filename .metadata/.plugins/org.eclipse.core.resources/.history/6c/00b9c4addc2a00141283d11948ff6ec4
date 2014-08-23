@@ -1,0 +1,14 @@
+package br.com.ECommerce.model.entities;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+@Entity(name = "pessoa")
+public class Pessoa {
+	@Id
+	@GeneratedValue
+	int id;
+
+	String nome;
+}

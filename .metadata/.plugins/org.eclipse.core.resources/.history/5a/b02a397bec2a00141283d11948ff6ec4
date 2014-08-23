@@ -1,0 +1,69 @@
+<context:component-scan base-package=“*” />
+
+<tx:annotation-driven />
+
+<tx:advice id=“txAdvice”>
+
+	<tx:attributes>
+
+		<tx:method name=“add*” propagation=“REQUIRED” />
+
+		<tx:method name=“delete*” propagation=“REQUIRED” />
+
+		<tx:method name=“read*” propagation=“REQUIRED” />
+
+		<tx:method name=“*” propagation=“SUPPORTS” read-only=“true” />
+
+	</tx:attributes>
+
+</tx:advice>
+
+<aop:config>
+
+	<aop:advisor pointcut=“execution(* * CarDAO. * advice-ref=“txAdvice” />
+
+</aop:config>
+
+<bean
+	class=“org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor” />
+
+<bean id=“dataSource”
+	class=“org.springframework.jdbc.datasource.DriverManagerDataSource”>
+
+	<property name=“driverClassName” value=“com.mysql.jdbc.Driver” />
+
+	<property name=“url” value=“jdbc:mysql://localhost/test” />
+
+	<property name=“username” value=“root” />
+
+	<property name=“password” value=“camilo2593″ />
+
+</bean>
+
+<bean id=“sessionFactory”
+	class=“org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean”>
+
+	<property name=“dataSource” ref=“dataSource” />
+
+	<property name=“packagesToScan” value=“br.com.camilolopes.car.domain.bean” />
+
+	<property name=“hibernateProperties”>
+
+		<props>
+
+			<prop key=“hibernate.dialect”>org.hibernate.dialect.MySQL5InnoDBDialect</prop>
+
+			<prop key=“hibernate.hbm2ddl.auto”>update</prop>
+
+		</props>
+
+	</property>
+
+</bean>
+
+<bean id=“transactionManager”
+	class=“org.springframework.orm.hibernate3.HibernateTransactionManager”>
+
+	<property name=“sessionFactory” ref=“sessionFactory” />
+
+</bean>

@@ -1,0 +1,63 @@
+package br.com.ECommerce.dao;
+
+import java.io.Serializable;
+import java.util.List;
+
+import org.hibernate.Session;
+import org.hibernate.criterion.DetachedCriteria;
+
+public class HibernateDAO<T> implements InterfaceDAO<T>, Serializable {
+
+	private static final long serialVersionUID = 1L;
+
+	private Class<T> classe;
+	private Session session;
+
+	@Override
+	public void save(T entity) {
+		session.save(entity);
+
+	}
+
+	@Override
+	public void update(T entity) {
+		session.update(entity);
+
+	}
+
+	@Override
+	public void remove(T entity) {
+		session.delete(entity);
+
+	}
+
+	@Override
+	public void merge(T entity) {
+		session.merge(entity);
+	}
+
+	@Override
+	public T getEntity(Serializable id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public T getEntityByDetachedCriteria(DetachedCriteria criteria) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<T> getEntities() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<T> getListByDetachedCriteria(DetachedCriteria criteria) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

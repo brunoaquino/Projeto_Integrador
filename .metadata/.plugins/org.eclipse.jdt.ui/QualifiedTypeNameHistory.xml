@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="org.hibernate.SessionFactory"/>
+<fullyQualifiedTypeName name="org.hibernate.cfg.AnnotationConfiguration"/>
+<fullyQualifiedTypeName name="org.hibernate.cfg.Configuration"/>
+<fullyQualifiedTypeName name="org.hibernate.service.ServiceRegistryBuilder"/>
+<fullyQualifiedTypeName name="javax.imageio.spi.ServiceRegistry"/>
+<fullyQualifiedTypeName name="org.hibernate.service.ServiceRegistry"/>
+<fullyQualifiedTypeName name="javax.persistence.Entity"/>
+<fullyQualifiedTypeName name="javax.persistence.GenerationType"/>
+<fullyQualifiedTypeName name="br.com.ECommerce.model.entities.Pessoa"/>
+<fullyQualifiedTypeName name="java.io.Serializable"/>
+<fullyQualifiedTypeName name="org.hibernate.criterion.DetachedCriteria"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="javax.faces.event.PhaseListener"/>
+<fullyQualifiedTypeName name="javax.faces.event.PhaseEvent"/>
+<fullyQualifiedTypeName name="org.hibernate.Session"/>
+<fullyQualifiedTypeName name="javax.faces.event.PhaseId"/>
+<fullyQualifiedTypeName name="javax.faces.context.ExceptionHandlerFactory"/>
+<fullyQualifiedTypeName name="javax.faces.context.ExceptionHandlerWrapper"/>
+<fullyQualifiedTypeName name="javax.faces.context.ExceptionHandler"/>
+<fullyQualifiedTypeName name="javax.faces.context.FacesContext"/>
+<fullyQualifiedTypeName name="java.util.Map"/>
+<fullyQualifiedTypeName name="javax.faces.application.NavigationHandler"/>
+<fullyQualifiedTypeName name="javax.faces.FacesException"/>
+<fullyQualifiedTypeName name="java.util.Iterator"/>
+<fullyQualifiedTypeName name="javax.faces.event.ExceptionQueuedEvent"/>
+<fullyQualifiedTypeName name="javax.faces.event.ExceptionQueuedEventContext"/>
+<fullyQualifiedTypeName name="javax.faces.application.FacesMessage"/>
+<fullyQualifiedTypeName name="java.io.StringWriter"/>
+<fullyQualifiedTypeName name="java.io.PrintWriter"/>
+</qualifiedTypeNameHistroy>

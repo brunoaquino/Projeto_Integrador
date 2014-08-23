@@ -1,0 +1,5 @@
+package br.com.ECommerce.dao;
+
+public class HibernateDAO {
+
+}
