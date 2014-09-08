@@ -20,6 +20,9 @@
 	</section>
 	<section name="org.eclipse.m2e.core.pom.dependencies">
 	</section>
+	<section name="org.jboss.tools.project.examples.stacksrequirements">
+		<item value="Apache Tomcat v7.0" key="targetRuntime"/>
+	</section>
 	<section name="org.eclipse.m2e.core.pom.overview">
 		<list key="ciManagementUrl">
 		</list>
@@ -49,6 +52,12 @@
 	<section name="MavenProjectWizardLocationPage">
 		<list key="location">
 		</list>
+		<list key="projectNameCombo">
+			<item value="jboss-springmvc-webapp"/>
+		</list>
+		<list key="packageCombo">
+			<item value="org.jboss.tools.example.springmvc"/>
+		</list>
 		<list key="projectNameTemplate">
 			<item value="[artifactId]"/>
 			<item value="[artifactId]-TRUNK"/>
@@ -59,12 +68,15 @@
 	</section>
 	<section name="Maven2ProjectWizardArchifactPage">
 		<list key="package">
+			<item value="org.jboss.tools.example.springmvc"/>
 			<item value="br.com.ECommerce"/>
 		</list>
 		<list key="groupId">
+			<item value="org.jboss.tools.example.springmvc"/>
 			<item value="br.com"/>
 		</list>
 		<list key="artifactId">
+			<item value="jboss-springmvc-webapp"/>
 			<item value="ECommerce"/>
 		</list>
 		<list key="projectNameTemplate">

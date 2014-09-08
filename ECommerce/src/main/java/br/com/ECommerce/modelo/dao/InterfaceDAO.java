@@ -1,4 +1,4 @@
-package br.com.ECommerce.dao;
+package br.com.ECommerce.modelo.dao;
 
 import java.io.Serializable;
 import java.util.List;

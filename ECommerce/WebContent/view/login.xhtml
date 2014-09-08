@@ -1,14 +1,38 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<?xml version="1.0" encoding="UTF-8"?>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui"> 
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Shop Homepage - Start Bootstrap Template</title>
+<!-- 	<link rel="icon" href="view/img/imgres.jpg" type="image/ico" />   -->
+	<link rel="shortcut icon" href="view/img/favicon.ico" />
+</h:head>
+<h:body>
+	<p:commandButton value=" Realizar o Login" oncomplete="dlgNovo.show();" image="icon-add" />
 
-<h:head></h:head> 
-<body> 
-	<h:form>
-		<p:button>oi</p:button>
+	<h:form id="formUsuario">
+
+		<p:dialog header="Realizar o Login" widgetVar="dlgNovo" resizable="false" id="dlgNovo" showEffect="fade" hideEffect="explode" modal="true">
+
+			<p:growl id="growl" showDetail="true" sticky="true" />
+
+			<h:panelGrid id="pgNovo" columns="2" cellpadding="4" style="margin:0 auto;">
+
+				<h:outputText value="E-mail" />
+				<p:inputText value="#{loginBean.email}" />
+				<h:outputText value="Senha" />
+				<p:inputText value="#{loginBean.senha}" />
+
+			</h:panelGrid>
+
+			<p:separator />
+
+			<p:commandButton action="#{loginBean.loginProject}" value="Login" update="formUsuario" ajax="true" />
+
+		</p:dialog>
 	</h:form>
-</body> 
+
+</h:body>
 </html>

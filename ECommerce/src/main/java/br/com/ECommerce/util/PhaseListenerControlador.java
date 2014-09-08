@@ -15,7 +15,7 @@ public class PhaseListenerControlador implements PhaseListener {
 	public void beforePhase(PhaseEvent fase) {
 		System.out.println("Antes da fase: " + fase.getPhaseId());
 		if (fase.getPhaseId().equals(PhaseId.RESTORE_VIEW)) {
-			Session session = HibernateUtil.getSession();
+			Session session = HibernateUtil.getSessionFactory().openSession();
 			session.beginTransaction();
 			FacesContextUtil.setRequestSession(session);
 		}

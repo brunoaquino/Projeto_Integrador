@@ -1,5 +1,0 @@
-package br.com.ECommerce.exeptions;
-
-public class CustomExceptionHandlerFactory {
-
-}

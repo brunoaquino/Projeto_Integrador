@@ -2,8 +2,16 @@
 <Layout resource="/ECommerce/WebContent/WEB-INF/faces-config.xml">
  <TreeFormPage>
   <Memento type="FacesConfig22">
-   <Memento type="Factories"/>
-   <Memento type="Lifecycle"/>
+   <Memento collapsed="false" type="Factories"/>
+   <Memento collapsed="false" type="Lifecycle"/>
+   <Memento collapsed="false" type="Advanced"/>
+  </Memento>
+  <Memento type="%No text%">
+   <Memento collapsed="false" type="Managed Beans"/>
+  </Memento>
+  <Memento type="JSFManagedBean20">
+   <Memento type="Managed Bean"/>
+   <Memento type="Properties"/>
    <Memento type="Advanced"/>
   </Memento>
  </TreeFormPage>

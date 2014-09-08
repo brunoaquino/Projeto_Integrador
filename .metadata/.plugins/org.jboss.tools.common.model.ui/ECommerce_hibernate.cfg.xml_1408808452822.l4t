@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Layout resource="/ECommerce/src/main/java/br/com/ECommerce/util/hibernate.cfg.xml">
+<Layout resource="/ECommerce/src/main/java/hibernate.cfg.xml">
  <TreeFormPage>
   <Memento type="HibConfig3SessionFactory">
    <Memento type="Session Factory"/>

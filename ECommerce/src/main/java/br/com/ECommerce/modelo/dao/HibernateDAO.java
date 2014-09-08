@@ -1,14 +1,21 @@
-package br.com.ECommerce.dao;
+package br.com.ECommerce.modelo.dao;
 
 import java.io.Serializable;
 import java.util.List;
 
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.DetachedCriteria;
 
 public class HibernateDAO<T> implements InterfaceDAO<T>, Serializable {
 
 	private static final long serialVersionUID = 1L;
+
+	public HibernateDAO(Class<T> classe, Session session) {
+		super();
+		this.classe = classe;
+		this.session = session;
+	}
 
 	private Class<T> classe;
 	private Session session;
@@ -16,24 +23,27 @@ public class HibernateDAO<T> implements InterfaceDAO<T>, Serializable {
 	@Override
 	public void save(T entity) {
 		session.save(entity);
-
 	}
 
 	@Override
 	public void update(T entity) {
+		Transaction tc = session.beginTransaction();
 		session.update(entity);
-
+		tc.commit();
 	}
 
 	@Override
 	public void remove(T entity) {
+		Transaction tc = session.beginTransaction();
 		session.delete(entity);
-
+		tc.commit();
 	}
 
 	@Override
 	public void merge(T entity) {
+		Transaction tc = session.beginTransaction();
 		session.merge(entity);
+		tc.commit();
 	}
 
 	@Override
