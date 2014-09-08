@@ -1,0 +1,6 @@
+package br.com.ECommerce.modelo.entidade;
+
+public class EntidadeBase {
+
+	
+}

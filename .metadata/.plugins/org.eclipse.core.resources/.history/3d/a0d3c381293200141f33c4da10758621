@@ -1,0 +1,278 @@
+package br.com.ECommerce.util;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class ValidacaoUtil {
+
+	public static boolean validarCPF(String xCPF) {
+		try {
+			// Testa se o CPF E valido ou nao
+			int d1, d4, xx, nCount, resto, digito1, digito2;
+			String Check;
+			String Separadores = "/-.";
+
+			d1 = 0;
+			d4 = 0;
+			xx = 1;
+
+			for (nCount = 0; nCount < xCPF.length() - 2; nCount++) {
+				String s_aux = xCPF.substring(nCount, nCount + 1);
+
+				if (Separadores.indexOf(s_aux) == -1) {
+					d1 = d1 + (11 - xx) * Integer.valueOf(s_aux).intValue();
+					d4 = d4 + (12 - xx) * Integer.valueOf(s_aux).intValue();
+					xx++;
+				}
+			}
+
+			resto = (d1 % 11);
+
+			if (resto < 2) {
+				digito1 = 0;
+			} else {
+				digito1 = 11 - resto;
+			}
+
+			d4 = d4 + 2 * digito1;
+			resto = (d4 % 11);
+
+			if (resto < 2) {
+				digito2 = 0;
+			} else {
+				digito2 = 11 - resto;
+			}
+
+			Check = String.valueOf(digito1) + String.valueOf(digito2);
+			String s_aux2 = xCPF.substring(xCPF.length() - 2, xCPF.length());
+
+			if (s_aux2.compareTo(Check) != 0) {
+				return false;
+			}
+
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	private static final String alinhaD(String Valor, int Tamanho,
+			String Caracter) {
+		String AuxValor = Valor;
+		for (int i = Valor.length(); i < Tamanho; i++)
+			AuxValor = Caracter + AuxValor;
+		return AuxValor;
+	}
+
+	public static boolean validarCNPJ(String xCGC) {
+		try {
+			// Testa se o CGC E valido ou nao
+			int d1, d4, xx, nCount, fator, resto, digito1, digito2;
+			String Check, s_aux;
+			String Separadores = "/-.";
+
+			d1 = 0;
+			d4 = 0;
+			xx = 0;
+
+			xCGC = alinhaD(xCGC, 14, "0");
+
+			for (nCount = 0; nCount < xCGC.length() - 2; nCount++) {
+				s_aux = xCGC.substring(nCount, nCount + 1);
+
+				if (Separadores.indexOf(s_aux) == -1) {
+					if (xx < 4) {
+						fator = 5 - xx;
+					} else {
+						fator = 13 - xx;
+					}
+
+					d1 = d1 + Integer.valueOf(s_aux).intValue() * fator;
+
+					if (xx < 5) {
+						fator = 6 - xx;
+					} else {
+						fator = 14 - xx;
+					}
+
+					d4 += Integer.valueOf(s_aux).intValue() * fator;
+					xx++;
+				}
+			}
+
+			resto = (d1 % 11);
+
+			if (resto < 2) {
+				digito1 = 0;
+			} else {
+				digito1 = 11 - resto;
+			}
+
+			d4 = d4 + 2 * digito1;
+			resto = (d4 % 11);
+
+			if (resto < 2) {
+				digito2 = 0;
+			} else {
+				digito2 = 11 - resto;
+			}
+
+			Check = String.valueOf(digito1) + String.valueOf(digito2);
+
+			if (Check
+					.compareTo(xCGC.substring(xCGC.length() - 2, xCGC.length())) != 0) {
+				return false;
+			}
+
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	public static boolean validarINSCESTADUAL(String xINSC, String siglaEstado) {
+		try {
+			if (siglaEstado.trim().equals("AC")) {
+				return new InscricaoEstadualAC().validate(xINSC); // ACRE
+			} else if (siglaEstado.trim().equals("AL")) {
+				return new InscricaoEstadualAL().validate(xINSC); // ALAGOAS
+			} else if (siglaEstado.trim().equals("AM")) {
+				return new InscricaoEstadualAM().validate(xINSC); // AMAZONAS
+			} else if (siglaEstado.trim().equals("AP")) {
+				return new InscricaoEstadualAP().validate(xINSC); // AMAPA
+			} else if (siglaEstado.trim().equals("BA")) {
+				return new InscricaoEstadualBA().validate(xINSC); // BAHIA
+			} else if (siglaEstado.trim().equals("CE")) {
+				return new InscricaoEstadualCE().validate(xINSC); // CEARA
+			} else if (siglaEstado.trim().equals("DF")) {
+				return new InscricaoEstadualDF().validate(xINSC); // BSB
+			} else if (siglaEstado.trim().equals("ES")) {
+				return new InscricaoEstadualES().validate(xINSC); // ESP SANTO
+			} else if (siglaEstado.trim().equals("GO")) {
+				return new InscricaoEstadualGO().validate(xINSC); // GOIAS
+			} else if (siglaEstado.trim().equals("MT")) {
+				return new InscricaoEstadualMT().validate(xINSC); // MATO GROSSO
+			} else if (siglaEstado.trim().equals("MG")) {
+				return new InscricaoEstadualMG().validate(xINSC); // MINAS
+			} else if (siglaEstado.trim().equals("PA")) {
+				return new InscricaoEstadualPA().validate(xINSC); // PARA
+			} else if (siglaEstado.trim().equals("PB")) {
+				return new InscricaoEstadualPB().validate(xINSC); // PARAIBA
+			} else if (siglaEstado.trim().equals("PR")) {
+				return new InscricaoEstadualPR().validate(xINSC); // PARANA
+			} else if (siglaEstado.trim().equals("PE")) {
+				return new InscricaoEstadualPE().validate(xINSC); // PERNAMBUCO
+			} else if (siglaEstado.trim().equals("PI")) {
+				return new InscricaoEstadualPI().validate(xINSC); // PIAUI
+			} else if (siglaEstado.trim().equals("RJ")) {
+				return new InscricaoEstadualRJ().validate(xINSC); // RIO
+			} else if (siglaEstado.trim().equals("RN")) {
+				return new InscricaoEstadualRN().validate(xINSC); // RIO NORTE
+			} else if (siglaEstado.trim().equals("RS")) {
+				return new InscricaoEstadualRS().validate(xINSC); // RIO SUL
+			} else if (siglaEstado.trim().equals("RO")) {
+				return new InscricaoEstadualRO().validate(xINSC); // RONDONIA
+			} else if (siglaEstado.trim().equals("RR")) {
+				return new InscricaoEstadualRR().validate(xINSC); // RORAIMA
+			} else if (siglaEstado.trim().equals("SC")) {
+				return new InscricaoEstadualSC().validate(xINSC); // SANTA
+																	// CATARINA
+			} else if (siglaEstado.trim().equals("SP")) {
+				return new InscricaoEstadualSP().validate(xINSC); // SANTA PAULO
+			} else if (siglaEstado.trim().equals("SE")) {
+				return new InscricaoEstadualSE().validate(xINSC); // SERGIPE
+			} else if (siglaEstado.trim().equals("TO")) {
+				return new InscricaoEstadualTO().validate(xINSC); // TOCANTINS
+			} else if (siglaEstado.trim().equals("MA")) {
+				System.out.println("Validação de IE do MA com problema!");
+			} else if (siglaEstado.trim().equals("MS")) {
+				System.out.println("Validação de IE do MS com problema!");
+			}
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Erro ao validar Inscrição Estadual");
+			return true;
+		}
+	}
+
+	/**
+	 * Valida campo CMC7 de cheques
+	 * 
+	 * @param campo
+	 * @return
+	 */
+	public static boolean validarCMC7(final String campo) {
+
+		String regexValida = "\\d{8}\\d{10}\\d{12}";
+		String regexInvalida = "[0]{8}[0]{10}[0]{12}";
+
+		Pattern invalido = Pattern.compile(regexInvalida);
+		Pattern valido = Pattern.compile(regexValida);
+
+		Matcher mInvalido = invalido.matcher(campo);
+		Matcher mValido = valido.matcher(campo);
+
+		if ((mInvalido.matches()) || (!mValido.matches())) {
+			return false;
+		}
+
+		String grupo1 = campo.substring(0, 7);
+		String grupo2 = campo.substring(8, 18);
+		String grupo3 = campo.substring(19, 29);
+
+		boolean ret1 = (modulo10(grupo1).equals(campo.substring(18, 19)));
+		boolean ret2 = (modulo10(grupo2).equals(campo.substring(7, 8)));
+		boolean ret3 = (modulo10(grupo3).equals(campo.substring(29, 30)));
+
+		if (ret1 && ret2 && ret3) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Função modulo10. Calcula o módulo10 de uma string numerica e retorna o
+	 * digito
+	 * 
+	 * @param numero
+	 *            - String contendo o numero a ter o mod10 calculado
+	 * @return String contendo o DAC do numero calculado
+	 * 
+	 */
+	private static String modulo10(String numero) {
+
+		int multi, posicao1, posicao2, acumula, resultado, dac;
+
+		dac = 0;
+		posicao1 = numero.length() - 1;
+		multi = 2;
+		acumula = 0;
+
+		while (posicao1 >= 0) {
+
+			resultado = Integer.parseInt(numero.substring(posicao1,
+					posicao1 + 1)) * multi;
+			posicao2 = Integer.toString(resultado).length() - 1;
+
+			while (posicao2 >= 0) {
+				acumula += Integer.parseInt(Integer.toString(resultado)
+						.substring(posicao2, posicao2 + 1));
+				posicao2--;
+			}
+
+			multi = (multi == 2) ? 1 : 2;
+			posicao1--;
+		}
+
+		dac = acumula % 10;
+		dac = 10 - dac;
+
+		if (dac == 10) {
+			dac = 0;
+		}
+
+		return String.valueOf(dac);
+	}
+}

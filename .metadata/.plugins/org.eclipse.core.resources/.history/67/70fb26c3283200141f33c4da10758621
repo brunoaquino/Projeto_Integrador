@@ -1,0 +1,6 @@
+package org.engine.util;
+
+public enum EnmCalendario {
+
+	DIA, MES, ANO, HORAS, MINUTOS, SEGUNDOS
+}

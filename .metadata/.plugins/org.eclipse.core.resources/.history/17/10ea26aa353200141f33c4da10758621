@@ -1,0 +1,41 @@
+package br.com.ECommerce.model.entities;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
+@Entity(name = "pessoa")
+@Table(name = "pessoa")
+@SequenceGenerator(name="Gerador",initialValue=1)
+public class Pessoa {
+
+	@Id
+	@Column(name = "id", nullable = false, unique = true)
+	@SequenceGenerator(name="CONTA_ID_GENERATOR", sequenceName="CONTA_ID_SEQ", allocationSize=1, initialValue=1)  
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	int id;
+
+	@Column(name = "nome")
+	String nome;
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+}

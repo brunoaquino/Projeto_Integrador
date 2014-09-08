@@ -1,0 +1,24 @@
+package br.com.ECommerce.modelo.dao.imp;
+
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+import br.com.ECommerce.modelo.dao.HibernateDAO;
+import br.com.ECommerce.modelo.entidade.Livro;
+
+public class LivroDao extends HibernateDAO<Livro> {
+
+	private static final long serialVersionUID = -2575035353490647340L;
+
+	public LivroDao(Class<Livro> classe, Session session) {
+		super(classe, session);
+	}
+	@Override
+	public void save(Livro entity) {
+		Session sessao = super().sessao;
+		Transaction tc = sessao.beginTransaction();
+		sessao.save(livro);
+		tc.commit();
+	}
+
+}

@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+<h:head>
+	<h:outputStylesheet library="css" name="teste.css" />
+	<style>
+html {
+	height: 100%;
+}
+
+.body {
+	height: 100%;
+}
+
+.form_100 {
+	height: 100%;
+}
+
+.table_100 {
+	height: 100%;
+}
+.tr_10{
+	height: 10%;
+
+}
+.tr_80{
+	height: 80%;
+
+}
+.td_10{
+width: 10%
+}
+</style>
+</h:head>
+
+
+<h:body styleClass="body">
+	<h:form id="form" styleClass="form_100">
+		<table class="table_100" width="100%">
+			<tr class="tr_10">
+				<td colspan="2" align="center" valign="top">
+					<ui:insert name="cabecalho">
+						<h1>Template Web</h1>
+					</ui:insert>
+					<ui:insert name="cabecalho_2nv">
+						<h2>Cabeçalho2</h2>
+					</ui:insert>
+				</td>
+			</tr>
+			<tr class="tr_80">
+				<td class="td_10" valign="top">
+					<ui:insert name="menu">
+						<ui:include src="/view/template/cabecalho.xhtml" />
+					</ui:insert>
+				</td>
+				<td valign="top">
+					<ui:insert name="conteudo">
+						<h3>Conteudo</h3>
+					</ui:insert>
+				</td>
+			</tr>
+			<tr class="tr_10">
+				<td colspan="2" align="center" valign="bottom">
+					<h1>Rodapé</h1>
+				</td>
+			</tr>
+		</table>
+	</h:form>
+</h:body>
+</html>

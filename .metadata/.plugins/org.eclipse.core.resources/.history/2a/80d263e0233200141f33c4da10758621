@@ -1,0 +1,8 @@
+package br.com.ECommerce.model.dao;
+
+import br.com.ECommerce.dao.HibernateDAO;
+import br.com.ECommerce.model.entities.Pessoa;
+
+public class PessoaDao extends HibernateDAO<Pessoa>{
+
+}

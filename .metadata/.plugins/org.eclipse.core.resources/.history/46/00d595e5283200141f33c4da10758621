@@ -1,0 +1,537 @@
+package org.engine.util;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.beanutils.PropertyUtils;
+import org.engine.entity.CoreEntity;
+
+@SuppressWarnings("rawtypes")
+public class ReflectionUtil {
+
+	private static final long serialVersionUID = -2401454685093362293L;
+
+
+	public static boolean  isAtributoPrimitivo(Field field){
+		try{
+			Class<?> type = field.getType();
+			//se for interface retorna FALSE
+			if(type.isInterface()){
+				return false;
+			}
+			//se for instancia de DBData retorna TRANSFER-OBJECT
+			if(type.newInstance() instanceof CoreEntity){
+				return false;
+			}
+		}catch (Exception e) {
+			return true;
+		}
+		return true;
+	}
+
+	/**
+	 * Verifica se um determinado FIELD está anotado com a Annotation passada como parâmetros.
+	 * @param field
+	 * @param annotation
+	 * @return
+	 * @return boolean
+	 */
+	public static boolean  isAnotado(Field field, Class<? extends Annotation> annotation){
+		try{
+			//se for interface retorna FALSE
+			if(field.getAnnotation(annotation) != null){
+				return true;
+			}
+		}catch (Exception e) {
+			return false;
+		}
+		return false;
+	}
+
+	/**
+	 * Retorna TRUE se o atributo passado como parâmetros estiver presente
+	 * no objeto (BEAN) e se o mesmo for uma tributo primitivo. Entende-se
+	 * por atributo primitivo qualquer atributo diferente de uma Collection
+	 * ou de um TrnasferObject. Qualquer  Wapper derivado de NUMBER (Long, Integer, Float,
+	 * Double, Short) ou String é um atributo primitivo.
+	 *
+	 * @param bean - {@link Class<?>}
+	 * @return boolean
+	 */
+	public static boolean  isCoreEntity(Field field){
+		try{
+			Class<?> type = field.getType();
+			//se for instancia de DBData retorna TRANSFER-OBJECT
+			if(type.newInstance() instanceof CoreEntity){
+				return true;
+			}
+		}catch (Exception e) {
+			return false;
+		}
+		return false;
+	}
+	
+	/**
+	 * Retorna TRUE se o atributo passado como parâmetros estiver presente
+	 * no objeto (BEAN) e se o mesmo for uma tributo primitivo. Entende-se
+	 * por atributo primitivo qualquer atributo diferente de uma Collection
+	 * ou de um TrnasferObject. Qualquer  Wapper derivado de NUMBER (Long, Integer, Float,
+	 * Double, Short) ou String é um atributo primitivo.
+	 *
+	 * @param classeName 	- CoreEntity - Nome da classe a ser comparada.
+	 * @param fieldName 	- String - Nome do atributo.
+	 * @return List<String>
+	 */
+	public static boolean  isAtributoPrimitivo(CoreEntity bean, String fieldName){
+		try{
+			Class<?> field = PropertyUtils.getPropertyType(bean, fieldName);
+			//se for interface retorna FALSE
+			if(field.isInterface()){
+				return false;
+			}
+			//se for instancia de CoreEntity retorna TRANSFER-OBJECT
+			if(field.newInstance() instanceof CoreEntity){
+				return false;
+			}
+		}catch (Exception e) {
+			return true;
+		}
+		return true;
+	}
+
+	/**
+	 * Retorna TRUE se o atributo passado como parâmetros estiver presente
+	 * no objeto (BEAN) e se o mesmo for uma tributo primitivo. Entende-se
+	 * por atributo primitivo qualquer atributo diferente de uma Collection
+	 * ou de um TrnasferObject. Qualquer  Wapper derivado de NUMBER (Long, Integer, Float,
+	 * Double, Short) ou String é um atributo primitivo.
+	 *
+	 * @param classeName 	- String - Nome da classe a ser comparada.
+	 * @param fieldName 	- String - Nome do atributo.
+	 * @return List<String>
+	 */
+	public static boolean  isAtributoPrimitivo(String classeName, String fieldName){
+		try{
+			Class<?> field = getTipoAtributo(Class.forName(classeName).newInstance(), fieldName);
+			//se for interface retorna FALSE
+			if(field.isInterface()){
+				return false;
+			}
+			//se for instancia de CoreEntity retorna TRANSFER-OBJECT
+			if(field.newInstance() instanceof CoreEntity){
+				return false;
+			}
+		}catch (Exception e) {
+			return true;
+		}
+		return true;
+	}
+
+	/**
+	 * Retorna TRUE se o atributo passado como parâmetros estiver presente
+	 * no objeto (BEAN) e se o mesmo for uma tributo primitivo. Entende-se
+	 * por atributo primitivo qualquer atributo diferente de uma Collection
+	 * ou de um TrnasferObject. Qualquer  Wapper derivado de NUMBER (Long, Integer, Float,
+	 * Double, Short) ou String é um atributo primitivo.
+	 *
+	 * @param classeName 	- Class<?> - Nome da classe a ser comparada.
+	 * @param fieldName 	- String - Nome do atributo.
+	 * @return boolean
+	 */
+	public static boolean  isAtributoPrimitivo(Class<?> bean, String fieldName){
+		try{
+			Class<?> field = PropertyUtils.getPropertyType(bean.newInstance(), fieldName);
+			//se for interface retorna FALSE
+			if(field.isInterface()){
+				return false;
+			}
+			
+			//se for instancia de CoreEntity retorna TRANSFER-OBJECT
+			if(field.newInstance() instanceof CoreEntity){
+				return false;
+			}
+		}catch (Exception e) {
+			return true;
+		}
+		return true;
+	}
+
+	/**
+	 * Retorna TRUE se o atributo passado como parâmetros estiver presente
+	 * no objeto (BEAN) e se o mesmo for uma tributo primitivo. Entende-se
+	 * por atributo primitivo qualquer atributo diferente de uma Collection
+	 * ou de um TrnasferObject. Qualquer  Wapper derivado de NUMBER (Long, Integer, Float,
+	 * Double, Short) ou String é um atributo primitivo.
+	 *
+	 * @param bean - {@link Class<?>}
+	 * @return boolean
+	 */
+	public static boolean  isCoreEntity(Class<?> bean, String fieldName){
+		try{
+			Class<?> field = PropertyUtils.getPropertyType(bean.newInstance(), fieldName);
+			//se for instancia de CoreEntity retorna TRANSFER-OBJECT
+			if(field.newInstance() instanceof CoreEntity){
+				return true;
+			}
+		}catch (Exception e) {
+			return false;
+		}
+		return false;
+	}
+
+	/**
+	 * Retorna TRUE se o atributo passado como parâmetros estiver presente
+	 * no objeto (BEAN) e se o mesmo for uma tributo primitivo. Entende-se
+	 * por atributo primitivo qualquer atributo diferente de uma Collection
+	 * ou de um TrnasferObject. Qualquer  Wapper derivado de NUMBER (Long, Integer, Float,
+	 * Double, Short) ou String é um atributo primitivo.
+	 *
+	 * @param bean - {Object}
+	 * @return boolean
+	 */
+	public static boolean  isCoreEntity(Object bean, String fieldName){
+		try{
+			Class<?> field = PropertyUtils.getPropertyType(bean.getClass(), fieldName);
+			//se for instancia de CoreEntity retorna TRANSFER-OBJECT
+			if(field.newInstance() instanceof CoreEntity){
+				return true;
+			}
+		}catch (Exception e) {
+			return false;
+		}
+		return false;
+	}
+
+	/**
+	 * Retorna o TYPE (Class) do atributo passado como parametro.
+	 *
+	 * @param bean - {@link CoreEntity}
+	 * @param fieldName - {@link String}
+	 * @return Class<?>
+	 */
+	public static Class<?> getTipoAtributo(Object bean, String fieldName){
+		try{
+			return PropertyUtils.getPropertyType(bean, fieldName);
+		}catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	/**
+	 * Retorna o TYPE (Class) do atributo passado como parametro.
+	 *
+	 * @param bean - {@link CoreEntity}
+	 * @param fieldName - {@link String}
+	 * @return Class<?>
+	 */
+	public static Class<?> getTipoAtributo(String className, String fieldName){
+		try{
+			return PropertyUtils.getPropertyType(Class.forName(className).newInstance(), fieldName);
+		}catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	/**
+	 * Retorna o valor de um atributo
+	 *
+	 * @param bean - {@link CoreEntity}
+	 * @param fieldName - {@link String}
+	 * @return Object
+	 */
+	public static Object getValorAtributo(CoreEntity bean, String fieldName){
+		try{
+			return PropertyUtils.getNestedProperty(bean, fieldName);
+		}catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+
+	/**
+	 * Retorna o valor de um atributo
+	 *
+	 * @param bean - {@link CoreEntity}
+	 * @param fieldName - {@link String}
+	 * @return Object
+	 */
+	public static Object getValorAtributo(Object bean, String fieldName){
+		try{
+			return PropertyUtils.getNestedProperty(bean, fieldName);
+		}catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	/**
+	 * Retorna a anotação passada como parâmetros localizada no FILDNAME do objeto.
+	 *
+	 * @param bean - {@link CoreEntity}
+	 * @param fieldName - {@link String}
+	 * @return Object
+	 */
+	public static Annotation getAnotacao(CoreEntity bean, String fieldName, Class<? extends java.lang.annotation.Annotation> annotation){
+		try{
+			Field campo = bean.getClass().getField(fieldName);
+			return campo.getAnnotation(annotation);
+		}catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	/**
+	 * Retorna o valor de um atributo
+	 *
+	 * @param bean - {@link CoreEntity}
+	 * @param fieldName - {@link String}
+	 */
+	
+	public static void setValorAtributo(CoreEntity bean, String caminhoPropriedade, Object fieldValue){
+		try{
+			if(caminhoPropriedade.indexOf('.') == -1){
+				PropertyUtils.setNestedProperty(bean, caminhoPropriedade, fieldValue);
+			}else{
+				String first = caminhoPropriedade.substring(0, caminhoPropriedade.indexOf("."));
+				Object valor = getValorAtributo(bean, first);
+				if(valor == null){
+					Class type = getTipoAtributo(bean, first);
+					Object property = instanciarEPopularAtributo(type.newInstance(), caminhoPropriedade.substring(caminhoPropriedade.indexOf(".")+1, caminhoPropriedade.length()), fieldValue);
+					PropertyUtils.setNestedProperty(bean, first, property);
+				}else{
+					Object property = instanciarEPopularAtributo(valor, caminhoPropriedade.substring(caminhoPropriedade.indexOf(".")+1, caminhoPropriedade.length()), fieldValue);
+					PropertyUtils.setNestedProperty(bean, first, property);					
+				}
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	
+	/**
+	 * Seta o valor de uma propriedade (Ex.: documento.autor.departamento.id), caso algum objeto no caminho estiver null
+	 * eleeinstanciado e setado no objeto para o caminho continuar a ser seguido
+	 * 
+	 * O ultima propridade do caminho a que vai receber o "valor" passado como parametro, se ela for um objeto, o construtor
+	 * que aceita uma String desse objeto  invocado para a criação da nova instancia.
+	 * 
+	 * 
+	 */
+	public static void setNestedValorAtributo(Object obj, String propriedade, String valor) throws Exception{
+		if(propriedade.contains(".")){
+		   int indice = 0;
+		   //Divide o "Caminho de Propriedades" em um Array de String
+		   String[] props = propriedade.split("\\.");
+		   Object objNow = obj;
+		   //Percorre o caminho de propriedades um a um.
+		   for(int j = 0; j < props.length; j++){
+			   //Verifica se a propriedade atual  a ultima do caminho
+			   if(j < (props.length - 1)){
+				  //Faz um "getPropriedade" para verificar se o caminho é null
+				  //Se for cria uma instancia do Objeto e seta na propriedade
+				  if(PropertyUtils.getProperty(objNow, props[j]) == null){
+					 Class<?> clas = PropertyUtils.getPropertyType(objNow, props[j]);
+					 PropertyUtils.setProperty(objNow, props[j], clas.newInstance());
+				  } 
+				  //Pega a proxima propriedade do caminho
+				  objNow = PropertyUtils.getProperty(objNow, props[j]);
+				}else{
+					//Se a propriedade for a ultima do caminho, seta o valor passado como parametro
+					setLastNestedProperty(objNow, props[j], valor);
+				}
+		   }
+		   indice++;
+		}else{
+		   //Se a propriedade for a unica do caminho, seta o valor passado como parametro
+		   setLastNestedProperty(obj, propriedade, valor);
+		}
+	}
+	
+	private static void setLastNestedProperty(Object obj, String propriedade, String valor) throws Exception{
+		  //Pega o Class do Objeto da ultima propriedade	
+		  Class<?> clas = PropertyUtils.getPropertyType(obj, propriedade);
+		  //Pega o construtor que aceita uma String e cria uma nova instancia do objeto
+		  Object objValue = clas.getDeclaredConstructor(String.class).newInstance(valor);
+		  //Seta a instancia criada no objeto
+		  PropertyUtils.setProperty(obj, propriedade, objValue);
+	}
+	
+	
+	/**
+	 * Retorna o valor de um atributo
+	 *
+	 * @param bean - {@link CoreEntity}
+	 * @param fieldName - {@link String}
+	 */
+	public static Object instanciarEPopularAtributo(Object obj, String caminhoPropriedade, Object fieldValue){
+		try{
+			if(caminhoPropriedade.indexOf('.') == -1){
+				PropertyUtils.setNestedProperty(obj, caminhoPropriedade, fieldValue);
+			}else{
+				String first = caminhoPropriedade.substring(0, caminhoPropriedade.indexOf("."));
+				Object valor = getValorAtributo(obj, first);
+				if(valor == null){
+					Class type = getTipoAtributo(obj, first);
+					Object property = instanciarEPopularAtributo(type.newInstance(), caminhoPropriedade.substring(caminhoPropriedade.indexOf(".")+1, caminhoPropriedade.length()), fieldValue);
+					PropertyUtils.setNestedProperty(obj, first, property);
+				}else{
+					Object property = instanciarEPopularAtributo(valor, caminhoPropriedade.substring(caminhoPropriedade.indexOf(".")+1, caminhoPropriedade.length()), fieldValue);
+					PropertyUtils.setNestedProperty(obj, first, property);					
+				}
+			}
+			return obj;
+		}catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	/**
+	 * Retorna o valor de um atributo
+	 *
+	 * @param bean - {@link CoreEntity}
+	 * @param fieldName - {@link String}
+	 */
+	@SuppressWarnings("unchecked")
+	public static void setValorAtributo(CoreEntity bean, String fieldName, String fieldValue, String fieldType){
+		try{
+			Class classlong = Class.forName(fieldType);
+			//este tratamento de erro não esta elegante, ele foi criado para driblar quando uma propriedade  do tipo
+			//CoreEntity tiver que ser instanciada pela aplicação a ser executada.
+			try{
+				Object obj = classlong.getDeclaredConstructor(String.class).newInstance(fieldValue);
+				PropertyUtils.setNestedProperty(bean, fieldName, obj);				
+			}catch (NoSuchMethodException e) {
+				Object obj = classlong.getDeclaredConstructor(Long.class).newInstance(Long.valueOf(fieldValue));
+				PropertyUtils.setNestedProperty(bean, fieldName, obj);				
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Retorna a lista de atributos do objeto passado como parâmetros.
+	 *
+	 * @param bean - {@link Object}
+	 * @return List<String>
+	 */
+	public static List<String>  buscarAtributosObjeto(Object bean){
+		List<String> lista = new ArrayList<String>();
+		Field[] fields = bean.getClass().getDeclaredFields();
+		for(Field field : fields){
+			lista.add(field.getName());
+		}
+		return lista;
+	}
+	
+	
+	
+	/**
+	 * Retorna a lista de atributos do objeto passado como parâmetros.
+	 *
+	 * @param bean - {@link Object}
+	 * @return List<String>
+	 */
+	public static List<Field>  listarAtributosByAnnotations(Object bean, Class<? extends Annotation> annotation){
+		List<Field> lista = new ArrayList<Field>();
+		Field[] fields = bean.getClass().getDeclaredFields();
+		for(Field field : fields){
+			if(field.isAnnotationPresent(annotation)){
+				lista.add(field);				
+			}
+		}
+		return lista;
+	}
+
+	/**
+	 * Retorna a lista de atributos do objeto passado como parâmetros.
+	 *
+	 * @param bean - {@link Object}
+	 * @return List<String>
+	 */
+	public static List<Field>  listarAtributos(Object bean){
+		List<Field> lista = new ArrayList<Field>();
+		Field[] fields = bean.getClass().getDeclaredFields();
+		for(Field field : fields){
+			lista.add(field);				
+		}
+		return lista;
+	}
+
+	public static List<Method>  listarMetodos(Object bean){
+		List<Method> lista = new ArrayList<Method>();
+		Method[] fields = bean.getClass().getDeclaredMethods();
+		for(Method field : fields){
+			lista.add(field);				
+		}
+		return lista;
+	}
+
+	/**
+	 * Retorna a lista de atributos de um objeto com base no NOME.
+	 * @param nomeObjeto - {@link String}
+	 * @return List<String>
+	 */
+	public static List<String>  buscarAtributosObjeto(String nomeObjeto){
+		Object bean = instanciar(nomeObjeto);
+		return buscarAtributosObjeto(bean);
+	}
+	
+
+	/**
+	 * Sobe na herança de classes para encontrar um CoreEntity,
+	 * e retorna true ou false, de acordo com o resultado da busca
+	 */
+    @SuppressWarnings("unchecked")
+	public static boolean herdaCoreEntity(Class classe) throws ClassNotFoundException{
+    	while((classe = classe.getSuperclass()) != null){
+    		  if(classe.isAssignableFrom(Class.forName(CoreEntity.class.getName())) && !(classe.getClass().getName().equals(CoreEntity.class.getName()))){
+    		     return true;
+    		  }
+    	}
+    	return false;
+    }
+
+	/**
+	 * Retorna a instancia de um objeto com base no NOME
+	 * @param nomeObjeto - String - Nome do CoreEntity a ser instanciado
+	 * @return CoreEntity
+	 */
+	public static <T> CoreEntity instanciarCoreEntity(String nomeObjeto){
+		try{
+			return (CoreEntity)Class.forName(nomeObjeto).newInstance();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	/**
+	 * Retorna a instancia de um objeto com base no NOME
+	 *
+	 * @param nomeObjeto - String
+	 * @return Object
+	 */
+	public static Object instanciar(String nomeObjeto){
+		try{
+			return Class.forName(nomeObjeto).newInstance();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+
+	
+	
+	
+}

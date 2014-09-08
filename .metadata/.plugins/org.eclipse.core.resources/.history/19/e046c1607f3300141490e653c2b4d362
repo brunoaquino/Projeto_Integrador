@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 03/09/2014 12:28:53 by Hibernate Tools 3.4.0.CR1 -->
+
+    <class name="br.com.ECommerce.model.entities.Pessoa" table="PESSOA">
+        <id name="id" type="int">
+            <column name="ID" />
+            <generator class="assigned" />
+        </id>
+        <property name="nome" type="java.lang.String">
+            <column name="NOME" />
+        </property>
+    </class>
+</hibernate-mapping>

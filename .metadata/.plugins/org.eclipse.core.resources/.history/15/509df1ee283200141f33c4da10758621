@@ -1,0 +1,59 @@
+
+import java.util.Date;
+
+public class RegCalendario {
+
+	private String id;
+	private String titulo;
+	private Boolean ativo;
+	private Date data;
+	private Boolean domingo;
+	private Boolean sabado;
+	private Boolean hoje;
+	
+	public String getId() {
+		return id;
+	}
+	public String getTitulo() {
+		return titulo;
+	}
+	public Boolean isAtivo() {
+		return ativo;
+	}
+	public Date getData() {
+		return data;
+	}
+	public Boolean isDomingo() {
+		return domingo;
+	}
+	public Boolean isSabado() {
+		return sabado;
+	}
+	public Boolean isHoje() {
+		return hoje;
+	}
+	public void setId(Integer id) {
+		this.id = "DIA_"+id;
+	}
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
+	public void isAtivo(Boolean ativo) {
+		this.ativo = ativo;
+	}
+	public void setData(Date data) {
+		this.data = data;
+	}
+	public void isDomingo(Boolean domingo) {
+		this.domingo = domingo;
+	}
+	public void isSabado(Boolean sabado) {
+		this.sabado = sabado;
+	}
+	public void isHoje(Boolean hoje) {
+		this.hoje = hoje;
+	}
+	
+	
+	
+}

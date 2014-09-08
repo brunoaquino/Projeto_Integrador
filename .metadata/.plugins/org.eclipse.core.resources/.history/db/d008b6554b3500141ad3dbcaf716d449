@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Shop Homepage - Start Bootstrap Template</title>
+	<h:outputLink value="css/bootstrap.min.css" rel="stylesheet" />
+	<h:outputLink value="css/shop-homepage.css" rel="stylesheet" />
+	<h:outputScript value="js/jquery-1.11.0.js" />
+	<h:outputScript value="js/bootstrap.min.js" />
+</h:head>
+<h:body>
+	<!-- CLASSE QUE DEFINE O CONTAINER COMO FLUIDO (100%) -->
+	<div class="container-fluid">
+		<!-- CLASSE PARA DEFINIR UMA LINHA -->
+		<div class="row-fluid">
+			<!-- COLUNA OCUPANDO 2 ESPAÇOS NO GRID -->
+			<div class="span2">Side bar</div>
+			<!-- COLUNA OCUPANDO 10 ESPAÇOS NO GRID -->
+			<div class="span10">Conteúdo Geral</div>
+		</div>
+	</div>
+</h:body>
+</html>

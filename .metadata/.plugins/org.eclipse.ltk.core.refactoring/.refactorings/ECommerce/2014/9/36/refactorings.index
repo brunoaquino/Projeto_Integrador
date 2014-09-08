@@ -1,0 +1,35 @@
+1409608731013	Delete element
+1409608858217	Move compilation unit
+1409608904077	Move compilation unit
+1409608939487	Rename type 'ClienteDao'
+1409611573136	Delete element
+1409612073100	Delete element
+1409758290539	Delete element
+1409758650666	Rename package 'br.com.ECommerce.dao.imp'
+1409758678983	Move compilation unit
+1409758688233	Delete element
+1409758698238	Rename package 'br.com.ECommerce.model.entities'
+1409758709166	Rename package 'br.com.ECommerce.dao'
+1409758729500	Rename package 'br.com.ECommerce.modelo.entities'
+1409758734898	Rename package 'br.com.ECommerce.modelo.entidades'
+1409792636103	Rename type 'HibernateUtil'
+1409796017175	Copy compilation unit
+1409796789711	Rename type 'Hibernate3_6Util'
+1409796794425	Delete element
+1409797534858	Copy compilation unit
+1409797762142	Delete element
+1409797788416	Delete element
+1409872435897	Delete element
+1409873032744	Move 1 resources to 'WebContent'
+1409873040392	Move 1 resources to 'view'
+1409873048401	Move 1 resources to 'view'
+1409873052357	Move 1 resources to 'view'
+1409873857959	Delete element
+1409955335011	Copy file
+1409955885190	Delete elements
+1409955889629	Delete element
+1409957497996	Delete elements
+1409959569206	Delete elements
+1409959585737	Delete elements
+1409960747440	Copy file
+1409961888821	Move 1 resources to 'img'

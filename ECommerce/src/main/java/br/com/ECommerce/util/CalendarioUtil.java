@@ -1,0 +1,1084 @@
+package br.com.ECommerce.util;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.Locale;
+
+public class CalendarioUtil {
+
+	public static final String DIA_HORAS = "dd/MM/yyyy HH:mm:ss";
+	public static final String MASCARA_DATA_HORA = "dd/MM/yyyy HH:mm";
+	public static final String MASCARA_DATA = "dd/MM/yyyy";
+	public static final String DDMMAAAA = "dd/MM/yyyy";
+	public static final String AAAAMMDD = "yyyyMMdd";
+	public static final String HHMMSS = "HH:mm:ss";
+	public static final String MASCARA_HORA = "HH:mm";
+
+	/**
+	 * Recupera somente a parte numérica de uma data no padrão ddMMyyyy
+	 * 
+	 * @param padrao
+	 * @param date
+	 * @return
+	 */
+	public static String formatarDDMMAAAA(Date date) {
+		if (date == null) {
+			return "";
+		}
+		String data = new SimpleDateFormat(DDMMAAAA).format(date);
+		return Texto.removeEstranhos(data);
+	}
+
+	public static String formatarHoraHHMMSS(Date date) {
+		if (date == null) {
+			return "";
+		}
+		String data = new SimpleDateFormat(HHMMSS).format(date);
+		return Texto.removeEstranhos(data);
+	}
+
+	public static String formatar(Date data) {
+		return new SimpleDateFormat(MASCARA_DATA).format(data);
+	}
+
+	public static Date clone(Date data) throws Exception {
+		String dt = new SimpleDateFormat(MASCARA_DATA_HORA).format(data);
+		return new SimpleDateFormat(MASCARA_DATA_HORA).parse(dt);
+	}
+
+	public static String getHoras(Date data) {
+		return new SimpleDateFormat(MASCARA_HORA).format(data);
+	}
+
+	public static String getHorasESegundos(Date data) {
+		return new SimpleDateFormat(HHMMSS).format(data);
+	}
+
+	public static String formatar(Date data, String mascara) {
+		return new SimpleDateFormat(mascara).format(data);
+	}
+
+	public static Date adicionar(Date data, int quantidade, EnmCalendario tipo) {
+		Calendar DataR = new GregorianCalendar();
+		DataR.setTime(data);
+		if (tipo.equals(EnmCalendario.DIA)) {
+			DataR.add(Calendar.DAY_OF_MONTH, quantidade);
+		} else if (tipo.equals(EnmCalendario.MES)) {
+			DataR.add(Calendar.MONTH, quantidade);
+		} else if (tipo.equals(EnmCalendario.ANO)) {
+			DataR.add(Calendar.YEAR, quantidade);
+		} else if (tipo.equals(EnmCalendario.HORAS)) {
+			DataR.add(Calendar.HOUR, quantidade);
+		} else if (tipo.equals(EnmCalendario.MINUTOS)) {
+			DataR.add(Calendar.MINUTE, quantidade);
+		} else if (tipo.equals(EnmCalendario.SEGUNDOS)) {
+			DataR.add(Calendar.SECOND, quantidade);
+		}
+		return DataR.getTime();
+	}
+
+	public static Date retornarDataSubtraidaDias(Date data, int dias) {
+		if (data == null)
+			return null;
+
+		GregorianCalendar dataAux = new GregorianCalendar();
+		dataAux.setTime(data);
+		dataAux.add(GregorianCalendar.DATE, (dias * -1));
+		return dataAux.getTime();
+	}
+
+	/**
+	 * Este método retorna a quantidade total de dias existente no MÊS da data
+	 * passada como parametro:
+	 * 
+	 * Ex: Qualquer Date do mês de fevereiro retorna 29.
+	 * 
+	 * @param data
+	 * @return
+	 */
+	public static int getQuantidadeDiasNoMes(Date data) {
+		Date diaPrimeiro = getDiaPrimeiroDoMes(data);
+		Date diaPrimeiroProximoMes = adicionar(diaPrimeiro, 1,
+				EnmCalendario.MES);
+		int diferenca = calculaDiferencaEntreDatas(diaPrimeiro,
+				diaPrimeiroProximoMes);
+		return diferenca;
+	}
+
+	/**
+	 * Retorna a data do dia 01 do mês da data passada como parâmetro. Ex: Se a
+	 * data passada como parametro for 17/03/2001 retorn 01/03/2011.
+	 * 
+	 * @param data
+	 * @return
+	 */
+	public static List<SemanaMes> getSemanas(Integer mes, Integer ano) {
+		List<SemanaMes> retorno = new ArrayList<SemanaMes>();
+		int qtdDiasMes = getQuantidadeDiasNoMes(CalendarioUtil.getDate(01, mes,
+				ano));
+
+		int contadorSemana = 1;
+		Date inicioSemana = null;
+		Date fimSemana = null;
+		for (int i = 1; i <= qtdDiasMes; i++) {
+
+			Date data = CalendarioUtil.getDate(i, mes, ano);
+			if (inicioSemana == null) {
+				inicioSemana = data;
+			}
+
+			// se for sabado então finaliza
+			if (get(data, GregorianCalendar.DAY_OF_WEEK) == GregorianCalendar.SATURDAY
+					|| i == qtdDiasMes) {
+				fimSemana = data;
+				retorno.add(new SemanaMes(contadorSemana, inicioSemana,
+						fimSemana));
+
+				// reinicia as variáveis
+				inicioSemana = null;
+				fimSemana = null;
+				contadorSemana++;
+			}
+		}
+		return retorno;
+	}
+
+	/**
+	 * Este método retorna uma lista contendo as datas limites das semanas
+	 * existentes em um Mês específico. A lista sera composta de objetos do tipo
+	 * SEMANA contendo a DataIncio, DataFim e o nº da semana referente ao mês.
+	 * 
+	 * @param data
+	 * @return
+	 */
+	public static Date getDiaPrimeiroDoMes(Date data) {
+		String dataDiaPrimeiro = "01/"
+				+ new Integer(get(data, GregorianCalendar.MONTH) + 1) + "/"
+				+ get(data, GregorianCalendar.YEAR);
+		return getDate(dataDiaPrimeiro);
+	}
+
+	/**
+	 * Retorna o primeiro dia do Mês de acordo com os parametros MES / ANO
+	 * passados como parâmetro.
+	 * 
+	 * @param mes
+	 * @param ano
+	 * @return
+	 */
+	public static Date getDiaPrimeiroDoMes(Integer mes, Integer ano) {
+		if (mes > 12) {
+			throw new RuntimeException("Mês não pode ser maior que 12.");
+		}
+		if (mes < 1) {
+			throw new RuntimeException("Mês não pode ser menor que 1");
+		}
+		if (ano.toString().length() != 4) {
+			throw new RuntimeException("Ano deve possuir 4 digitos YYYY.");
+		}
+		String dataDiaPrimeiro = "01/" + mes + "/" + ano;
+		return getDate(dataDiaPrimeiro);
+	}
+
+	/**
+	 * Retorna um inteiro que representa o DIA da semana do primeiro dia do mês.
+	 * 
+	 * @param mes
+	 * @param ano
+	 * @return
+	 */
+	public static int getDiaSemanaPrimeiroDoMes(Integer mes, Integer ano) {
+		if (mes > 12) {
+			throw new RuntimeException("Mês não pode ser maior que 12.");
+		}
+		if (mes < 1) {
+			throw new RuntimeException("Mês não pode ser menor que 1");
+		}
+		if (ano.toString().length() != 4) {
+			throw new RuntimeException("Ano deve possuir 4 digitos YYYY.");
+		}
+		String dataDiaPrimeiro = "01/" + mes + "/" + ano;
+		Date primeiro = getDate(dataDiaPrimeiro);
+		return get(primeiro, GregorianCalendar.DAY_OF_WEEK);
+	}
+
+	/**
+	 * Retorna verdadeiro se for o último dia do mês.
+	 * 
+	 * @param data
+	 * @return
+	 */
+	public static boolean isUltimoDiaDoMes(Date data) {
+		Date ultimo = getUltimoDiaDoMes(data);
+		int dia = get(data, GregorianCalendar.DAY_OF_MONTH);
+		int ultimoDia = get(ultimo, GregorianCalendar.DAY_OF_MONTH);
+		return dia == ultimoDia;
+	}
+
+	/**
+	 * Retorna verdadeiro se for dia 1 do mês.
+	 * 
+	 * @param data
+	 * @return
+	 */
+	public static boolean isDiaPrimeiroDoMes(Date data) {
+		int dia = get(data, GregorianCalendar.DAY_OF_MONTH);
+		return dia == 1;
+	}
+
+	/**
+	 * Retorna uma data que representa o último dia do mês da data passada como
+	 * parâmetro.
+	 * 
+	 * @param data
+	 * @return
+	 */
+	public static Date getUltimoDiaDoMes(Date data) {
+		// gera uma data temporaria com o primeiro dia do mes
+		data = getDiaPrimeiroDoMes(data);
+		/*
+		 * adiciona 35 dias à data do dia 1 do mes atual, fazendo com que chegue
+		 * a uma data muito próxima do dia 05 do próximo mês
+		 */
+		data = adicionar(data, 35, EnmCalendario.DIA);
+		// recupera a data do dia 1 do próximo mês
+		data = getDiaPrimeiroDoMes(data);
+
+		/*
+		 * subtrai 1 dia do dia primeiro do próximo mês chegando assim ao último
+		 * dia do mês atual
+		 */
+		data = retornarDataSubtraidaDias(data, 1);
+		// retorna as 23:59 do último dia do mês atual
+		return getDateVinteTresECinquentaENove(data);
+	}
+
+	/**
+	 * Retorna a data do último dia do mês da data passada como parâmetro às
+	 * 23:59:59. Ex: Se a data passada como parametro for 17/02/2008 retorna
+	 * 29/02/2008. Se a data passada como parametro for 17/02/2011 retorna
+	 * 28/02/2011.
+	 * 
+	 * @param data
+	 * @return
+	 */
+	public static Date getUltimoDiaDoMesVinteTresECinquentaENove(Date data) {
+		// recupera o dia primeiro
+		Date diaPrimeiro = getDiaPrimeiroDoMes(data);
+		Date diaPrimeiroProximoMes = adicionar(diaPrimeiro, 1,
+				EnmCalendario.MES);
+		Date retorno = retornarDataSubtraidaDias(diaPrimeiroProximoMes, 1);
+		return getDateVinteTresECinquentaENove(retorno);
+	}
+
+	public static int calculaDiferencaAbsolutaEntreDatas(String dataInicial,
+			String dataFinal) {
+		dataInicial = Texto.removeEstranhos(dataInicial);
+		dataFinal = Texto.removeEstranhos(dataFinal);
+		GregorianCalendar gc1 = new GregorianCalendar(
+				Integer.parseInt(dataInicial.substring(4, dataInicial.length())),
+				Integer.parseInt(dataInicial.substring(2, 4)), Integer
+						.parseInt(dataInicial.substring(0, 2)));
+		GregorianCalendar gc2 = new GregorianCalendar(
+				Integer.parseInt(dataFinal.substring(4, dataFinal.length())),
+				Integer.parseInt(dataFinal.substring(2, 4)),
+				Integer.parseInt(dataFinal.substring(0, 2)));
+
+		if (gc1.after(gc2))
+			return (int) ((gc1.getTime().getTime() - gc2.getTime().getTime()) / 1000 / 60 / 60 / 24);
+		else
+			return (int) ((gc2.getTime().getTime() - gc1.getTime().getTime()) / 1000 / 60 / 60 / 24);
+	}
+
+	/**
+	 * Retorna verdadeiro se a dataUM for MAIOR que a dataDOIS.
+	 * 
+	 * @param dataUM
+	 * @param dataDOIS
+	 * @return
+	 */
+	public static Boolean isDataMaior(Date dataUM, Date dataDOIS) {
+		return dataUM.compareTo(dataDOIS) > 0;
+	}
+
+	/**
+	 * Retorna verdadeiro se a DataCompara estiver entre os períodos informados
+	 * 
+	 * @param inicio
+	 * @param fim
+	 * @param dataCompara
+	 * @return
+	 */
+	public static Boolean isEntreAsDatas(Date inicio, Date fim, Date dataCompara) {
+		return isDataMaior(dataCompara, inicio)
+				&& isDataMenor(dataCompara, fim);
+	}
+
+	/**
+	 * Retorna verdadeiro se a dataUM for MENOR que a dataDOIS.
+	 * 
+	 * @param dataUM
+	 * @param dataDOIS
+	 * @return
+	 */
+	public static Boolean isDataMenor(Date dataUM, Date dataDOIS) {
+		return dataUM.compareTo(dataDOIS) < 0;
+	}
+
+	/**
+	 * Verifica se a DATAUM é igual a DATADOIS desconsiderando as horas.
+	 * 
+	 * @param dataUM
+	 * @param dataDOIS
+	 * @return
+	 */
+	public static Boolean isDataIgualDesconsideraHoras(Date dataUM,
+			Date dataDOIS) {
+		String dtUm = formatar(dataUM);
+		String dtDois = formatar(dataDOIS);
+		try {
+			dataUM = new SimpleDateFormat(MASCARA_DATA).parse(dtUm);
+			dataDOIS = new SimpleDateFormat(MASCARA_DATA).parse(dtDois);
+			return dataUM.compareTo(dataDOIS) == 0;
+		} catch (Exception e) {
+			throw new RuntimeException("ERRO na formatação de data: "
+					+ e.getMessage());
+		}
+	}
+
+	/**
+	 * Recupera o Nome do Mês
+	 * 
+	 * @param data
+	 * @return
+	 */
+	public static String getNomeMes(Date data) {
+		String dt = CalendarioUtil.Formatar(data, "ddMMyyyy");
+		int mes = Integer.parseInt(dt.substring(2, 4));
+
+		String ret = "";
+		switch (mes) {
+		case 1:
+			ret = "Janeiro";
+			break;
+		case 2:
+			ret = "Fevereiro";
+			break;
+		case 3:
+			ret = "Março";
+			break;
+		case 4:
+			ret = "Abril";
+			break;
+		case 5:
+			ret = "Maio";
+			break;
+		case 6:
+			ret = "Junho";
+			break;
+		case 7:
+			ret = "Julho";
+			break;
+		case 8:
+			ret = "Agosto";
+			break;
+		case 9:
+			ret = "Setembro";
+			break;
+		case 10:
+			ret = "Outubro";
+			break;
+		case 11:
+			ret = "Novembro";
+			break;
+		case 12:
+			ret = "Dezembro";
+			break;
+
+		default:
+			break;
+		}
+		return ret;
+	}
+
+	/**
+	 * Recupera o Nome do Mês
+	 * 
+	 * @param data
+	 * @return
+	 */
+	public static String getNomeMes(Integer mes) {
+		String ret = "";
+		switch (mes) {
+		case 1:
+			ret = "Janeiro";
+			break;
+		case 2:
+			ret = "Fevereiro";
+			break;
+		case 3:
+			ret = "Março";
+			break;
+		case 4:
+			ret = "Abril";
+			break;
+		case 5:
+			ret = "Maio";
+			break;
+		case 6:
+			ret = "Junho";
+			break;
+		case 7:
+			ret = "Julho";
+			break;
+		case 8:
+			ret = "Agosto";
+			break;
+		case 9:
+			ret = "Setembro";
+			break;
+		case 10:
+			ret = "Outubro";
+			break;
+		case 11:
+			ret = "Novembro";
+			break;
+		case 12:
+			ret = "Dezembro";
+			break;
+
+		default:
+			break;
+		}
+		return ret;
+	}
+
+	/**
+	 * Recupera o Abreviação do Mês
+	 * 
+	 * @param data
+	 * @return
+	 */
+	public static String getAbreviacaoMes(Date data) {
+		String dt = CalendarioUtil.Formatar(data, "ddMMyyyy");
+		int mes = Integer.parseInt(dt.substring(2, 4));
+
+		String ret = "";
+		switch (mes) {
+		case 1:
+			ret = "Jan";
+			break;
+		case 2:
+			ret = "Fev";
+			break;
+		case 3:
+			ret = "Mar";
+			break;
+		case 4:
+			ret = "Abr";
+			break;
+		case 5:
+			ret = "Mai";
+			break;
+		case 6:
+			ret = "Jun";
+			break;
+		case 7:
+			ret = "Jul";
+			break;
+		case 8:
+			ret = "Ago";
+			break;
+		case 9:
+			ret = "Set";
+			break;
+		case 10:
+			ret = "Out";
+			break;
+		case 11:
+			ret = "Nov";
+			break;
+		case 12:
+			ret = "Dez";
+			break;
+
+		default:
+			break;
+		}
+		return ret;
+	}
+
+	public static boolean isHoje(Date data) {
+		return CalendarioUtil.isDataIgualDesconsideraHoras(now(), data);
+	}
+
+	public static boolean isSexta(Date data) {
+		int diaSemana = get(data, GregorianCalendar.DAY_OF_WEEK);
+		return diaSemana == GregorianCalendar.FRIDAY;
+	}
+
+	public static boolean isQuinta(Date data) {
+		int diaSemana = get(data, GregorianCalendar.DAY_OF_WEEK);
+		return diaSemana == GregorianCalendar.TUESDAY;
+	}
+
+	public static boolean isQuarta(Date data) {
+		int diaSemana = get(data, GregorianCalendar.DAY_OF_WEEK);
+		return diaSemana == GregorianCalendar.WEDNESDAY;
+	}
+
+	public static boolean isTerca(Date data) {
+		int diaSemana = get(data, GregorianCalendar.DAY_OF_WEEK);
+		return diaSemana == GregorianCalendar.THURSDAY;
+	}
+
+	public static boolean isSegunda(Date data) {
+		int diaSemana = get(data, GregorianCalendar.DAY_OF_WEEK);
+		return diaSemana == GregorianCalendar.MONDAY;
+	}
+
+	/**
+	 * Retorna verdade se for Domingo
+	 * 
+	 * @param data
+	 * @return
+	 */
+	public static boolean isDomingo(Date data) {
+		int diaSemana = get(data, GregorianCalendar.DAY_OF_WEEK);
+		return diaSemana == GregorianCalendar.SUNDAY;
+	}
+
+	/**
+	 * Retorna verdade se for Domingo
+	 * 
+	 * @param data
+	 * @return
+	 */
+	public static boolean isSabado(Date data) {
+		int diaSemana = get(data, GregorianCalendar.DAY_OF_WEEK);
+		return diaSemana == GregorianCalendar.SATURDAY;
+	}
+
+	/**
+	 * Recupera o nome do dia da semana para a data passada como parametro.
+	 * 
+	 * @param data
+	 * @return
+	 */
+	public static String getNomeDiaSemana(Date data) {
+		int diaSemana = get(data, GregorianCalendar.DAY_OF_WEEK);
+		String ret = "";
+		switch (diaSemana) {
+		case GregorianCalendar.SUNDAY:
+			ret = "Domingo";
+			break;
+		case GregorianCalendar.MONDAY:
+			ret = "Segunda-Feira";
+			break;
+		case GregorianCalendar.TUESDAY:
+			ret = "Terça-Feira";
+			break;
+		case GregorianCalendar.WEDNESDAY:
+			ret = "Quarta-Feira";
+			break;
+		case GregorianCalendar.THURSDAY:
+			ret = "Quinta-Feira";
+			break;
+		case GregorianCalendar.FRIDAY:
+			ret = "Sexta-Feira";
+			break;
+		case GregorianCalendar.SATURDAY:
+			ret = "Sabado";
+			break;
+		default:
+			break;
+		}
+		return ret;
+	}
+
+	public static int calculaDiferencaAbsolutaEntreDatas(Date dataInicial,
+			Date dataFinal) {
+		String inicio = new SimpleDateFormat("dd/MM/yyyy").format(dataInicial);
+		String fim = new SimpleDateFormat("dd/MM/yyyy").format(dataFinal);
+		return calculaDiferencaAbsolutaEntreDatas(inicio, fim);
+	}
+
+	public static int calculaDiferencaEntreDatas(Date dataInicial,
+			Date dataFinal) {
+		return CalendarioUtil.calculaDiferencaEntreDatas(
+				CalendarioUtil.Formatar(dataInicial, "ddMMyyyy"),
+				CalendarioUtil.Formatar(dataFinal, "ddMMyyyy"));
+	}
+
+	public static long calculaDiferencaEntreDatasEmMinutos(Date dataInicial,
+			Date dataFinal) {
+		return (dataFinal.getTime() - dataInicial.getTime()) / 1000 / 60;
+	}
+
+	public static long calculaDiferencaEntreDatasEmHoras(Date dataInicial,
+			Date dataFinal) {
+		return (dataFinal.getTime() - dataInicial.getTime()) / 1000 / 60 / 60;
+	}
+
+	public static long calculaDiferencaEntreDatasEmDias(Date dataInicial,
+			Date dataFinal) {
+		return ((dataFinal.getTime() - dataInicial.getTime()) / 1000 / 60 / 60 / 24) + 1;
+	}
+
+	public static int calculaDiferencaEntreDatas(String dataInicial,
+			String dataFinal) {
+		long DAY = 24L * 60L * 60L * 1000L;
+		SimpleDateFormat df = new SimpleDateFormat("ddMMyyyy");
+		Date d1 = null;
+		Date d2 = null;
+
+		try {
+			d1 = df.parse(dataInicial);
+			d2 = df.parse(dataFinal);
+		} catch (Exception e) {
+		}
+
+		int dif = (int) ((d2.getTime() - d1.getTime()) / DAY);
+		return dif;
+	}
+
+	public static int calculaDiferencaEntreDatasEmMeses(Date dataInicial,
+			Date dataFinal) {
+		int mesIni = Integer.parseInt(Formatar(dataInicial, "MM"));
+		int anoIni = Integer.parseInt(Formatar(dataInicial, "yyyy"));
+		int mesFim = Integer.parseInt(Formatar(dataFinal, "MM"));
+		int anoFim = Integer.parseInt(Formatar(dataFinal, "yyyy"));
+
+		return ((anoFim - anoIni) * 12) - (-(mesFim - mesIni));
+	}
+
+	private static String Formatar(Date Data, String Padrao) {
+		if (Data == null) {
+			return new String();
+		}
+
+		Locale.setDefault(new Locale("pt", "BR"));
+		SimpleDateFormat formatD = new SimpleDateFormat(Padrao);
+		return formatD.format(Data);
+	}
+
+	public static int retornarDiferencaEntreDatasEmAnos(String dataInicial,
+			String dataFinal) {
+		String anoInicial = dataInicial.substring(4, dataInicial.length());
+		String anoFinal = dataFinal.substring(4, dataFinal.length());
+		return Integer.parseInt(anoFinal) - Integer.parseInt(anoInicial);
+	}
+
+	/**
+	 * Converte uma STRINF no format DD/MM/YYYY em uma campo Date.
+	 * 
+	 * @param data
+	 * @return
+	 */
+	public static Date getDate(String data) {
+		Date date = null;
+		try {
+			date = new SimpleDateFormat(MASCARA_DATA).parse(data);
+		} catch (ParseException e) {
+			throw new java.lang.RuntimeException("Erro ao converter data.");
+		}
+		return date;
+	}
+
+	public static Date getDate(Integer dia, Integer mes, Integer ano) {
+		Date date = null;
+		try {
+			date = new SimpleDateFormat(MASCARA_DATA).parse(dia + "/" + mes
+					+ "/" + ano);
+		} catch (ParseException e) {
+			throw new java.lang.RuntimeException("Erro ao converter data.");
+		}
+		return date;
+	}
+
+	public static Date getDate(Integer dia, Integer mes, Integer ano,
+			Integer horas, Integer minutos) {
+		Date date = null;
+		try {
+			date = new SimpleDateFormat(MASCARA_DATA_HORA).parse(dia + "/"
+					+ mes + "/" + ano + " " + horas + ":" + minutos);
+		} catch (ParseException e) {
+			throw new java.lang.RuntimeException("Erro ao converter data.");
+		}
+		return date;
+	}
+
+	public static Date getDate(Integer dia, Integer mes, Integer ano,
+			Integer horas, Integer minutos, Integer segundos) {
+		Date date = null;
+		try {
+			date = new SimpleDateFormat(DIA_HORAS).parse(dia + "/" + mes + "/"
+					+ ano + " " + horas + ":" + minutos + ":" + segundos);
+		} catch (ParseException e) {
+			throw new java.lang.RuntimeException("Erro ao converter data.");
+		}
+		return date;
+	}
+
+	/**
+	 * Recupera a data informada
+	 * 
+	 * @param data
+	 * @param MASCARA
+	 * @return
+	 */
+	public static Date getDate(String data, String MASCARA) {
+		Date date = null;
+		try {
+			date = new SimpleDateFormat(MASCARA).parse(data);
+		} catch (ParseException e) {
+			throw new java.lang.RuntimeException("Erro ao converter data.");
+		}
+		return date;
+	}
+
+	/**
+	 * Este método recebe um objeto DATE e Retorna um novo DATE com as horas
+	 * zeradas.
+	 * 
+	 * @param data
+	 * @return
+	 */
+	public static Date getDateZeroHoras(Date data) {
+		try {
+			String date = new SimpleDateFormat(MASCARA_DATA).format(data);
+			return new SimpleDateFormat(MASCARA_DATA).parse(date);
+		} catch (ParseException e) {
+			throw new java.lang.RuntimeException("Erro ao converter data.");
+		}
+	}
+
+	/**
+	 * Este método recebe um objeto DATE e Retorna um novo DATE com as horas
+	 * zeradas.
+	 * 
+	 * @param data
+	 * @return
+	 */
+	public static Date getDateVinteTresECinquentaENove(Date data) {
+		try {
+			String date = new SimpleDateFormat(MASCARA_DATA).format(data);
+			Date dt = new SimpleDateFormat(MASCARA_DATA).parse(date);
+			dt = adicionar(dt, 23, EnmCalendario.HORAS);
+			dt = adicionar(dt, 59, EnmCalendario.MINUTOS);
+			dt = adicionar(dt, 59, EnmCalendario.SEGUNDOS);
+			return dt;
+		} catch (ParseException e) {
+			throw new java.lang.RuntimeException("Erro ao converter data.");
+		}
+	}
+
+	/**
+	 * Recupera qualquer parametro de um atributo do tipo DATE.
+	 * 
+	 * @param data
+	 * @param CONSTANTE_GRCCALENDAR
+	 * @return
+	 * @throws DaoException
+	 */
+	public static Integer get(Date data, int CONSTANTE_GRCCALENDAR) {
+		GregorianCalendar dataAux = new GregorianCalendar();
+		dataAux.setTime(data);
+		return dataAux.get(CONSTANTE_GRCCALENDAR);
+	}
+
+	/**
+	 * Por padrão no GregoriCalendar o mês de Janeiro é representado pelo valor
+	 * 0 e o mes de Dezembro é representado pelo valor 11, isso pq na estrutura
+	 * interna é um vetor que inicia na posição 0. Este método soma 1 ao valor
+	 * retornado pelo GregoriCalendar retornando o valor real do mes 1 =
+	 * Janeiro, 12 = Dezembro.
+	 * 
+	 * @param data
+	 * @param CONSTANTE_GRCCALENDAR
+	 * @return
+	 */
+	public static Integer getMesReal(Date data) {
+		int mes = get(data, GregorianCalendar.MONTH);
+		return mes + 1;
+	}
+
+	/**
+	 * Retorna o ANO da data
+	 * 
+	 * @param data
+	 * @return
+	 */
+	public static Integer getAno(Date data) {
+		return get(data, GregorianCalendar.YEAR);
+	}
+
+	/**
+	 * Retorna a data INÍCIO do Intervalo do Calendário levando em consideração
+	 * 42 dias.
+	 * 
+	 * @param data
+	 * @return
+	 */
+	public static Date getDataInicioIntervaloCalendario(Date data) {
+		int mes = getMesReal(data);
+		int ano = getAno(data);
+		int diaSemana = getDiaSemanaPrimeiroDoMes(mes, ano);
+		return retornarDataSubtraidaDias(data, diaSemana - 1);
+	}
+
+	/**
+	 * Retorna uma lista contendo itens que representam um caledário mensal para
+	 * o MÊS da Data passada como parametro.
+	 * 
+	 * @param data
+	 * @return
+	 */
+	public static List<RegCalendario> getCalendario(Date data) {
+		int mes = getMesReal(data);
+		int ano = getAno(data);
+		int diaSemana = getDiaSemanaPrimeiroDoMes(mes, ano);
+		int contadorID = 1;
+		List<RegCalendario> dados = new ArrayList<RegCalendario>();
+		for (int i = 1; i < diaSemana; i++) {
+			// data corrente
+			Date corrente = retornarDataSubtraidaDias(data, diaSemana - i);
+			String abrevMes = getAbreviacaoMes(corrente);
+			int diaMes = get(corrente, GregorianCalendar.DAY_OF_MONTH);
+
+			RegCalendario dia = new RegCalendario();
+			dia.setId(contadorID);
+			dia.setTitulo(abrevMes + " " + diaMes);
+			dia.isAtivo(false);
+			dia.setData(corrente);
+			dia.isDomingo(isDomingo(corrente));
+			dia.isHoje(isHoje(corrente));
+			dia.isSabado(isSabado(corrente));
+			dados.add(dia);
+			contadorID++;
+		}
+
+		// 2º - monta os dias úteis do mês
+		// itera sob os dias úteis
+		int totalDias = getQuantidadeDiasNoMes(data);
+		for (int i = 0; i < totalDias; i++) {
+			Date corrente = adicionar(data, i, EnmCalendario.DIA);
+			String abrevMes = getAbreviacaoMes(corrente);
+			int diaMes = get(corrente, GregorianCalendar.DAY_OF_MONTH);
+
+			RegCalendario dia = new RegCalendario();
+			dia.setId(contadorID);
+			dia.setTitulo(abrevMes + " " + diaMes);
+			dia.isAtivo(true);
+			dia.setData(corrente);
+			dia.isDomingo(isDomingo(corrente));
+			dia.isHoje(isHoje(corrente));
+			dia.isSabado(isSabado(corrente));
+			dados.add(dia);
+			contadorID++;
+		}
+
+		// 3º - insere os dias COMPLEMENTO POSTERIORES ao mês atual
+		int restante = 42 - dados.size();
+		Date ultimoDia = getUltimoDiaDoMes(data);
+		for (int i = 1; i < restante + 1; i++) {
+			// data corrente
+			Date corrente = adicionar(ultimoDia, i, EnmCalendario.DIA);
+			String abrevMes = getAbreviacaoMes(corrente);
+			int diaMes = get(corrente, GregorianCalendar.DAY_OF_MONTH);
+
+			RegCalendario dia = new RegCalendario();
+			dia.setId(contadorID);
+			dia.setTitulo(abrevMes + " " + diaMes);
+			dia.isAtivo(false);
+			dia.setData(corrente);
+			dia.isDomingo(isDomingo(corrente));
+			dia.isHoje(isHoje(corrente));
+			dia.isSabado(isSabado(corrente));
+			dados.add(dia);
+			contadorID++;
+		}
+		return dados;
+	}
+
+	/**
+	 * Recupera a data Menor.
+	 * 
+	 * @param dataUM
+	 * @param dataDOIS
+	 * @return
+	 */
+	public static Date getDataMenor(Date dataUM, Date dataDOIS) {
+		if (CalendarioUtil.isDataMaior(dataUM, dataDOIS)) {
+			return dataDOIS;
+		} else {
+			return dataUM;
+		}
+	}
+
+	/**
+	 * Recupera a data Maior.
+	 * 
+	 * @param dataUM
+	 * @param dataDOIS
+	 * @return
+	 */
+	public static Date getDataMaior(Date dataUM, Date dataDOIS) {
+		if (CalendarioUtil.isDataMaior(dataUM, dataDOIS)) {
+			return dataUM;
+		} else {
+			return dataDOIS;
+		}
+	}
+
+	/**
+	 * Retorna a data FINAL do Intervalo do Calendário levando em consideração
+	 * 42 dias.
+	 * 
+	 * @param data
+	 * @return
+	 */
+	public static Date getDataFinalIntervaloCalendario(Date data) {
+		int mes = getMesReal(data);
+		int ano = getAno(data);
+		int diaSemana = getDiaSemanaPrimeiroDoMes(mes, ano);
+		int totalDias = getQuantidadeDiasNoMes(data);
+		int restante = 42 - (diaSemana + totalDias);
+		Date ultimoDia = getUltimoDiaDoMes(data);
+		return adicionar(ultimoDia, restante + 1, EnmCalendario.DIA);
+	}
+
+	/**
+	 * Calcula a idade [ ANOS ] com base na data de nascimento até a data atual
+	 * [ new Date() ]
+	 * 
+	 * @param dataNascimento
+	 * @return
+	 */
+	public static Integer retornaIdade(Date dataNascimento) {
+		int emDias = CalendarioUtil.calculaDiferencaAbsolutaEntreDatas(
+				dataNascimento, now());
+		return Math.abs(emDias / 365);
+	}
+
+	/**
+	 * Calcula a idade [ ANOS ] com base na data de nascimento até a data base [
+	 * 2º parâmetro ]
+	 * 
+	 * @param dataNascimento
+	 * @param dataBase
+	 * @return
+	 */
+	public static Integer retornaIdade(Date dataNascimento, Date dataBase) {
+		int emDias = CalendarioUtil.calculaDiferencaAbsolutaEntreDatas(
+				dataNascimento, dataBase);
+		return Math.abs(emDias / 365);
+	}
+
+	/**
+	 * Retorna os dois Ultimos digitos do ano
+	 * 
+	 * @param data
+	 * @return
+	 */
+	public static Integer getDoisUltimosDigitosAno(Date data) {
+		Integer ano = getAno(data);
+		String doisDigitos = Integer.toString(ano);
+		StringBuffer sb = new StringBuffer(doisDigitos);
+		sb.delete(0, 2);
+		doisDigitos = sb.toString();
+		return Integer.parseInt(doisDigitos);
+
+	}
+
+	/**
+	 * Calcula e retorna quantidade de dias que passou da data do vencimento, se
+	 * for maior do que a data atual retorna zero
+	 * 
+	 * @param dataVencimento
+	 * @return
+	 */
+	public static Integer calculaQuantidadeDiasVencidos(Date dataVencimento) {
+		// calcula a diferença entre a data da emissao do relatorio
+		// e a data de vencimento da parcela
+		Date data = now();
+		Integer diferenca = CalendarioUtil.calculaDiferencaAbsolutaEntreDatas(
+				dataVencimento, data);
+
+		// verifica se a data de vencimento é posterior a data de emissão do
+		// relatorio
+		Boolean dataMaior = CalendarioUtil.isDataMaior(dataVencimento, data);
+		if (dataMaior != true) {
+			return diferenca;
+		} else {
+			return 0;
+		}
+	}
+
+	/**
+	 * Retorna uma nova data
+	 * 
+	 * @return
+	 */
+	public static Date now() {
+		return new Date();
+	}
+
+	/**
+	 * Data base com HORA atual.
+	 * 
+	 * @param dataBase
+	 * @return
+	 */
+	public static Date now(Date dataBase) {
+		Calendar cal = Calendar.getInstance();
+		/* dia, mes e ano da DATA BASE */
+		cal.set(Calendar.YEAR, get(dataBase, Calendar.YEAR));
+		cal.set(Calendar.MONTH, get(dataBase, Calendar.MONTH));
+		cal.set(Calendar.DAY_OF_MONTH, get(dataBase, Calendar.DAY_OF_MONTH));
+
+		/* horas, minutos, segundos e milesegundos */
+		cal.set(Calendar.HOUR_OF_DAY, get(new Date(), Calendar.HOUR_OF_DAY));
+		cal.set(Calendar.MINUTE, get(new Date(), Calendar.MINUTE));
+		cal.set(Calendar.SECOND, get(new Date(), Calendar.SECOND));
+		cal.set(Calendar.MILLISECOND, get(new Date(), Calendar.MILLISECOND));
+
+		/* recupera nova data */
+		return cal.getTime();
+	}
+
+	/**
+	 * Retorna verdadeiro se a primeira data é MAIOR OU IQUAL a segunda data.
+	 * 
+	 * @param first
+	 * @param second
+	 * @return
+	 */
+	public static boolean isGreaterEq(Date first, Date second) {
+		if (first.after(second) || first.equals(second)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Retorna verdadeiro se a primeira data é MENOR OU IQUAL a segunda data.
+	 * 
+	 * @param first
+	 * @param second
+	 * @return
+	 */
+	public static boolean isLessEq(Date first, Date second) {
+		if (first.before(second) || first.equals(second)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+}

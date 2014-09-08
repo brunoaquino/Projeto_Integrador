@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+<h:head>
+	<h:outputStylesheet library="css" name="teste.css" />
+	<style>
+html {
+	height: 100%;
+}
+
+.body {
+	height: 100%;
+}
+
+.form_100 {
+	height: 100%;
+}
+
+.table_100 {
+	height: 100%;
+}
+</style>
+</h:head>
+
+
+<h:body styleClass="body">
+	<h:form id="form" styleClass="form_100">
+		<table class="table_100" width="100%">
+			<tr>
+				<td colspan="2" align="center">
+					<ui:insert name="cabecalho">
+						<h1>Template Web</h1>
+					</ui:insert>
+				</td>
+			</tr>
+			<tr>
+				<td width="200px" valign="top">
+					<ui:insert name="menu">
+						<ui:include src="/view/template/cabecalho.xhtml" />
+					</ui:insert>
+				</td>
+				<td valign="top">
+					<ui:insert name="conteudo">
+						<h3>Há milhares de anos o universo existia em harmonia. Os ciclos de escuridão e luz se alternavam periodicamente. As estrelas nasciam, brilhavam e explodiam. Sempre o mesmo ciclo. Harmonia. Tranqüilidade. A luz fez um planeta fértil. Plantas surgiram. A harmonia continuou. Animais surgiram. Sucederam as eras geológicas. Surgiu, então, o homem. O homem não se contentou com os ciclos naturais. Construiu ferramentas e com estas ergueu as cidades, afastando-se até das memórias dos campos, da vida simples e natural. A harmonia se despedaçou.
+Ao homem foi dado o domínio da tecnologia, mas ele a usou para a destruição. Foi dada também a conquista do meio, mas ele o converteu em sua própria prisão. As florestas foram arrasadas. A atmosfera foi poluída. Enfim, a Terra criou o homem e foi destruída por sua criação.
+Os mais sábios tentaram impedir o progresso, mas o lucro do momento fechou os ouvidos do homem. A avalanche continuou. Cada um competiu para transformar uma parte maior do todo. Ignoraram completamente o ciclo natural. Materialismo passou a ser o novo indicador.
+O progresso abalou o homem até onde a ambição alcança. Ele cada vez sabe mais, consegue mais e constrói mais. Só que não percebe, em sua escalada, a possibilidade da queda. Quando ele se der conta dos abusos que comete, será tarde demais para voltar. </h3>
+					</ui:insert>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center" valign="bottom">
+					<h1>Rodapé</h1>
+				</td>
+			</tr>
+		</table>
+	</h:form>
+</h:body>
+</html>

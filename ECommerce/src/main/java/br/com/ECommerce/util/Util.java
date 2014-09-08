@@ -1,0 +1,221 @@
+package br.com.ECommerce.util;
+
+
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.Map;
+
+@SuppressWarnings("rawtypes")
+public class Util {
+
+	public static Long getRandomNumber() {
+		NumberFormat fmt;
+		Calendar cal = new GregorianCalendar();
+		GregorianCalendar dtX = new GregorianCalendar();
+		cal.setTime(new Date());
+		dtX.setTime(new Date());
+
+		GregorianCalendar dtY = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
+		Date d1 = dtX.getTime();
+		Date d2 = dtY.getTime();
+		long l1 = d1.getTime();
+		long l2 = d2.getTime();
+
+		Long secs = new Long((l1 - l2) / 1000);
+		Integer dias = new Integer(cal.get(Calendar.DAY_OF_YEAR));
+		Integer ano = new Integer(cal.get(Calendar.YEAR));
+
+		fmt = new DecimalFormat("000");
+		String s1 = fmt.format(dias);
+		fmt = new DecimalFormat("00000");
+		String s2 = fmt.format(secs);
+		String formato = ano.toString() + s1 + s2;
+
+		return Long.valueOf(formato + Math.random());
+	}
+
+//	public static Class getPropertType(String caminho, Object objeto) throws Exception {
+//		if (caminho.indexOf('.') != -1) {
+//			Class retorno = null;
+//			List<String> lista = split(caminho, '.');
+//			int niveis = lista.size();
+//			for (int i = 0; i < niveis; i++) {
+//				if (i < niveis - 1) {
+//					try {
+//						objeto = PropertyUtils.getPropertyType(objeto, lista.get(i)).newInstance();
+//					} catch (Exception e) {
+//						throw new RuntimeException("[" + lista.get(i) + "] não é atributo de [" + objeto.getClass().getCanonicalName() + "]");
+//					}
+//				} else {
+//					try {
+//						retorno = PropertyUtils.getPropertyType(objeto, lista.get(i));
+//					} catch (Exception e) {
+//						throw new RuntimeException("[" + lista.get(i) + "] não é atributo de [" + objeto.getClass().getCanonicalName() + "]");
+//					}
+//				}
+//			}
+//			return retorno;
+//		} else {
+//			try {
+//				return PropertyUtils.getPropertyType(objeto, caminho);
+//			} catch (Exception e) {
+//				throw new RuntimeException("[" + caminho + "] não é atributo de [" + objeto.getClass().getCanonicalName() + "]");
+//			}
+//		}
+//	}
+
+	/**
+	 * Retorna uma LISTA de Strings dividindo pelo caractere separador.
+	 * 
+	 * @param s
+	 * @param c
+	 * @return
+	 */
+	public static List<String> split(String s, char c) {
+		String valor = s;
+		List<String> resultado = new ArrayList<String>();
+		if (!valor.isEmpty()) {
+			while (valor.indexOf(c) != -1) {
+				if (!valor.substring(0, valor.indexOf(c)).equals(""))
+					resultado.add(valor.substring(0, valor.indexOf(c)).trim());
+				valor = valor.substring(valor.indexOf(c) + 1, valor.length());
+			}
+			if (!valor.isEmpty()) {
+				resultado.add(valor.trim());
+			}
+		}
+		return resultado;
+	}
+
+	public static List<String> split(String s) {
+		String valor = s;
+		List<String> resultado = new ArrayList<String>();
+		if (!valor.isEmpty()) {
+			while (valor.length() > 0) {
+				if (!valor.substring(0, valor.length() - (valor.length() - 1)).equals(""))
+					resultado.add(valor.substring(0, valor.length() - (valor.length() - 1)).trim());
+				valor = valor.substring(1, valor.length());
+			}
+			if (!valor.isEmpty()) {
+				resultado.add(valor.trim());
+			}
+		}
+		return resultado;
+	}
+
+	/**
+	 * Verifica se uma determinada propriedade está contida em um MAP
+	 * 
+	 * @param key
+	 * @param parametros
+	 * @return
+	 */
+	public static Boolean containsInMap(String key, Map<String, Object> parametros) {
+		return parametros.get(key) != null && !parametros.get(key).toString().isEmpty() && !parametros.get(key).toString().toUpperCase().trim().equals("NAN");
+	}
+
+	/**
+	 * Retorna verdadeiro se for um valor Válido.
+	 * 
+	 * @param value
+	 * @return
+	 */
+	public static Boolean isValido(Object value) {
+		if (value == null) {
+			return false;
+		}
+		if (value.toString().isEmpty()) {
+			return false;
+		}
+		if (value.toString().toUpperCase().trim().equals("NAN")) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Retorna verdadeir se for Número
+	 * 
+	 * @param valor
+	 * @return
+	 */
+	public static boolean isNumeric(String valor) {
+		try {
+			new Double(valor.trim());
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Verifica se a STR passada como parametro à NUMBER ou BOOLEAN
+	 * 
+	 * @param valor
+	 * @return
+	 */
+	public static boolean isNumberORBoolean(String valor) {
+		// se existir espaço no meio não tem chance de ser BOOLEAN ou INTEGER
+		if (valor.trim().indexOf(" ") != -1) {
+			return false;
+		}
+		if (isNumeric(valor)) {
+			return true;
+		}
+		if (valor.toUpperCase().equals("TRUE") || valor.toUpperCase().equals("FALSE")) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Compara os valores das duas strings para verificar se antiga foi
+	 * modificada.
+	 * 
+	 * @param String
+	 *            valorAntigo
+	 * @param String
+	 *            valorNovo
+	 * @return String null - Se não houve modificação. "null" - Se houve
+	 *         modificação de remoção do valor antigo. String diferente de
+	 *         "null" e não nula se houve modificação para um novo valor não
+	 *         null ou vazio.
+	 */
+	public static String comparaObjetoAntigoNovo(String valorAntigo, String valorNovo) {
+		String textoCampo = null;
+		if (valorAntigo == null) {
+			if (valorNovo != null && !valorNovo.isEmpty()) {
+				textoCampo = valorNovo;
+			}
+		} else {
+			if (valorNovo == null) {
+				textoCampo = "null";
+			} else {
+				if (!valorAntigo.equals(valorNovo) && valorNovo.isEmpty()) {
+					valorNovo = "null";
+					textoCampo = valorNovo;
+				}
+			}
+		}
+		return textoCampo;
+	}
+
+	public static <T extends CoreEntity> T newInstance(Class<T> c, Object id) {
+		try {
+			T ins = c.newInstance();
+			ins.setId(Long.valueOf(id.toString()));
+			return ins;
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+}

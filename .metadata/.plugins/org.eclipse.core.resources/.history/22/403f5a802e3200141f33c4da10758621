@@ -1,0 +1,17 @@
+package br.com.ECommerce.model.dao;
+
+import org.hibernate.Session;
+
+import br.com.ECommerce.dao.HibernateDAO;
+import br.com.ECommerce.model.entities.Pessoa;
+
+public class PessoaDao extends HibernateDAO<Pessoa>{
+
+	private static final long serialVersionUID = 1L;
+
+	public PessoaDao(Session sessao) {
+		super();
+	}
+	
+	
+}

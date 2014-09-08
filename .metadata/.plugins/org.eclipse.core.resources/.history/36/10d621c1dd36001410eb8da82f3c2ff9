@@ -1,0 +1,11 @@
+@CHARSET "ISO-8859-1";
+
+html, body {
+    min-height: 100%;
+}
+
+#page { 
+    min-height: 90%; 
+    position: relative;
+    overflow: hidden;
+}

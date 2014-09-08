@@ -1,0 +1,39 @@
+package br.com.ECommerce.modelo.entidade;
+
+import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+
+@Entity
+@SequenceGenerator(name = "seq_pessoa", sequenceName = "pessoa_id_pessoa_seq", allocationSize = 1, initialValue = 1)
+public class Pessoa implements Serializable {
+	private static final long serialVersionUID = 1L;
+	private int id;
+	private String nome;
+
+	@Id
+	@Column
+	// @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(generator = "seq_pessoa")
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	@Column
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+}

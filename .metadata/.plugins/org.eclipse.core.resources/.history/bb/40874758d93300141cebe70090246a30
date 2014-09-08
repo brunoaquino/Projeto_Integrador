@@ -1,0 +1,24 @@
+package br.com.ECommerce.util;
+
+import org.hibernate.Session;
+
+import br.com.ECommerce.modelo.dao.imp.LivroDao;
+import br.com.ECommerce.modelo.entidade.Livro;
+import br.com.ECommerce.modelo.entidade.Pessoa;
+
+public class TesteHibernate {
+
+	public static void main(String[] args) {
+		Pessoa pessoa = new Pessoa();
+		pessoa.setNome("Bruno carvalho");
+		Livro livro  = new Livro();
+		
+		sessao.getTransaction().begin();
+		 Session sessao = HibernateUtil.getSessionFactory().openSession();
+
+		LivroDao dao = new LivroDao(Livro.class, sessao);
+		dao.save(livro);
+		sessao.close();
+	}
+
+}

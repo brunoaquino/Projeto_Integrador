@@ -1,0 +1,125 @@
+package br.com.ECommerce.util;
+
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+
+import com.sun.image.codec.jpeg.JPEGCodec;
+import com.sun.image.codec.jpeg.JPEGEncodeParam;
+import com.sun.image.codec.jpeg.JPEGImageDecoder;
+import com.sun.image.codec.jpeg.JPEGImageEncoder;
+
+public class ImagemUtil {
+
+	/**
+	 * Este método reduz a qualidade de uma imagem retornando um arquivo de
+	 * menor tamanho.
+	 * 
+	 * @param imagem
+	 * @return
+	 * @author CIRO
+	 */
+	public static byte[] compactar(byte[] imagem, float quanlidade)
+			throws Exception {
+		// gera os arquivos temporários
+		String fileNameOut = FileUtil.gerarTempFileByFileName(Texto
+				.getRandomString(9) + ".jpg");
+		String fileNameIn = FileUtil.saveTmpFile(Texto.getRandomString(10)
+				+ ".jpg", imagem);
+		InputStream fIn = new FileInputStream(fileNameIn);
+		JPEGImageDecoder decoder = JPEGCodec.createJPEGDecoder(fIn);
+		BufferedImage img = decoder.decodeAsBufferedImage();
+
+		// salva o resultado
+		FileOutputStream fOut = new FileOutputStream(fileNameOut);
+		JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(fOut);
+		JPEGEncodeParam jpegParams = encoder.getDefaultJPEGEncodeParam(img);
+		jpegParams.setQuality(quanlidade, false);
+		encoder.setJPEGEncodeParam(jpegParams);
+		encoder.encode(img);
+
+		// fecha o arquivo
+		fIn.close();
+		fOut.close();
+
+		byte[] out = FileUtil.getBytes(fileNameOut);
+
+		FileUtil.deleteFile(new File(fileNameIn), 0, 4);
+		FileUtil.deleteFile(new File(fileNameOut), 0, 4);
+		return out;
+	}
+
+	/**
+	 * Método que modifica o tamanho de uma imagem
+	 * 
+	 * @param imagem
+	 * @return
+	 * @author CIRO
+	 */
+	public static byte[] resize(byte[] imagem, int width, int height) {
+		// gera os arquivos temporários
+		String fileNameOut = FileUtil.gerarTempFileByFileName(Texto
+				.getRandomString(9) + ".jpg");
+		try {
+			String fileNameIn = FileUtil.saveTmpFile(Texto.getRandomString(10)
+					+ ".jpg", imagem);
+			InputStream fIn = new FileInputStream(fileNameIn);
+			JPEGImageDecoder decoder = JPEGCodec.createJPEGDecoder(fIn);
+			BufferedImage img = decoder.decodeAsBufferedImage();
+
+			// reduz o tamanho
+			if ((width > 0 && height == 0) || (width == 0 && height > 0)) {
+				int size = (width > 0) ? width : height;
+				width = img.getWidth();
+				height = img.getHeight();
+				float fRatio = (float) img.getWidth() / (float) img.getHeight();
+				if (width > size) {
+					width = size;
+					height = (int) ((float) size / fRatio);
+				}
+				if (height > size) {
+					height = size;
+					width = (int) ((float) size * fRatio);
+				}
+			}
+
+			BufferedImage imgNew = new BufferedImage(width, height,
+					BufferedImage.TYPE_INT_RGB);
+			Graphics2D grapImg = imgNew.createGraphics();
+			grapImg.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+					RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+			AffineTransform xform = AffineTransform.getScaleInstance(
+					(double) width / img.getWidth(),
+					(double) height / img.getHeight());
+			grapImg.drawRenderedImage(img, xform);
+			grapImg.dispose();
+			img = imgNew;
+
+			// salva o resultado
+			FileOutputStream fOut = new FileOutputStream(fileNameOut);
+			JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(fOut);
+			JPEGEncodeParam jpegParams = encoder.getDefaultJPEGEncodeParam(img);
+			jpegParams.setQuality(0.75f, false);
+			encoder.setJPEGEncodeParam(jpegParams);
+			encoder.encode(img);
+
+			// fecha o arquivo
+			fIn.close();
+			fOut.close();
+
+			byte[] out = FileUtil.getBytes(fileNameOut);
+
+			FileUtil.deleteFile(new File(fileNameIn), 0, 4);
+			FileUtil.deleteFile(new File(fileNameOut), 0, 4);
+			return out;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException("Erro ao Compactar imagem");
+		}
+	}
+}

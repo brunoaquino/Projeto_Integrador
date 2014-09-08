@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html;" />
+	<h:outputStylesheet library="css" name="teste.css" />
+	<link type="text/css" rel="stylesheet" href="teste.css" />
+</h:head>
+
+<h:body>
+	<h:form id="form2">
+		<ui:composition template="/view/template/template.xhtml">
+			<ui:define name="menu">
+				<h:form>
+					<p:growl autoUpdate="true" />
+
+					<p:panelMenu style="width:300px">
+						<p:submenu label="Ajax Menuitems">
+							<p:menuitem />
+						</p:submenu>
+						<p:submenu label="Non-Ajax Menuitem">
+						
+						</p:submenu>
+						
+						<p:separator />
+						
+						<p:submenu label="Navigations">
+							<p:submenu label="Links" icon="ui-icon-extlink">
+								<p:submenu label="PrimeFaces" icon="ui-icon-heart">
+								
+								</p:submenu>
+							</p:submenu>
+						</p:submenu>
+					</p:panelMenu>
+				</h:form>
+			</ui:define>
+		</ui:composition>
+
+	</h:form>
+</h:body>
+</html>

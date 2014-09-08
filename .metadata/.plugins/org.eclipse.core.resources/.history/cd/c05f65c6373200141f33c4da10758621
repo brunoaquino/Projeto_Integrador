@@ -1,0 +1,38 @@
+package br.com.ECommerce.model.entities;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.TableGenerator;
+
+@Entity(name = "pessoa")
+public class Pessoa {
+
+	@Id
+	@Column(name = "Id")
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = "user_table_generator")
+	@TableGenerator(name = "user_table_generator", table = "id", initialValue = 1, allocationSize = 1)
+	int id;
+
+	@Column
+	String nome;
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+}
